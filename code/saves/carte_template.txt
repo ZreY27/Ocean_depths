@@ -1,0 +1,14 @@
+CARTE;longueur;largeur
+CARTE;3;3
+JOUEUR;PV;PV_max;oxygène;oxygène_max;fatigue;perles
+JOUEUR;100;100;100;100;0;0;
+CASE;y;x;type;
+CASE;0;0;0;;;1
+CASE;0;1;0;;;1
+CASE;0;2;0;;;1
+CASE;1;0;4;;;1
+CASE;1;1;4;;;1
+CASE;1;2;4;;;1
+CASE;2;0;4;;;1
+CASE;2;1;4;;;1
+CASE;2;2;4;;;1

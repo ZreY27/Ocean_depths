@@ -3,7 +3,9 @@
 
 #include "creatures.h"
 #include "joueur.h"
+#include "carte.h"
 
-void affiche_combat(CreatureMarine * creature, Plongeur * joueur);
+void afficheCombat(CreatureMarine * creature, Plongeur * joueur);
+void afficherCarte(Carte carte);
 
 #endif

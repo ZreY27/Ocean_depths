@@ -3,7 +3,7 @@
 #include "../include/creatures.h"
 
 
-CreatureMarine init_creature() {
+CreatureMarine initCreature() {
     CreatureMarine creature;
     creature.id = 1;
     //creature.nom = malloc(sizeof(char*));

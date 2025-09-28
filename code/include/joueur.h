@@ -10,6 +10,6 @@ typedef struct {
      int perles; // monnaie du jeu
  }Plongeur;
 
-Plongeur init_joueur();
+Plongeur initJoueur();
 
 #endif

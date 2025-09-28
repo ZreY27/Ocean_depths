@@ -1,4 +1,4 @@
-Étape 1 : Génération de Créatures Marines❌  
+Étape 1 : Génération de Créatures Marines🔄  
 . Types de créatures   
 . Structure de données suggérée  
 . Génération  

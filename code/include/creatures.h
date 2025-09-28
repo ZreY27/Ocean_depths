@@ -15,6 +15,6 @@ typedef struct {
     int est_vivant;
 }CreatureMarine;
 
-CreatureMarine init_creature();
+CreatureMarine initCreature();
 
 #endif
