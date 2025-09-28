@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include "../include/joueur.h"
 
-Plongeur init_joueur() {
+Plongeur initJoueur() {
     Plongeur joueur;
     joueur.points_de_vie = 100;
     joueur.points_de_vie_max = 100;

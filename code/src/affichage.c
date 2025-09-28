@@ -3,8 +3,9 @@
 #include "../include/affichage.h"
 #include "../include/creatures.h"
 #include "../include/joueur.h"
+#include "../include/carte.h"
 
-void affiche_combat(CreatureMarine * creature, Plongeur * joueur) {
+void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
     printf("OceanDepths - Profondeur:       ");
     printf("Perles : %d\n", joueur->perles);
 
@@ -16,4 +17,13 @@ void affiche_combat(CreatureMarine * creature, Plongeur * joueur) {
         } else printf(".");
     }
     printf("]");
+}
+
+void afficherCarte(Carte carte) {
+    for (int i = 0;i < carte.hauteur;i++) {
+        for (int j = 0;j < carte.longueur;j++) {
+            printf("%d ", carte.cases[i][j].type);
+        }
+        printf("\n");
+    }
 }
