@@ -3,4 +3,4 @@ project(OceanDepths C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(OceanDepths main.c)
+add_executable(OceanDepths code/src/main.c)
