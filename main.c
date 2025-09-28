@@ -4,6 +4,7 @@
 #include "code/include/joueur.h"
 #include "code/include/creatures.h"
 #include "code/include/carte.h"
+#include "code/include/sauvegarde.h"
 
 int main(void) {
     Plongeur joueur = initJoueur();
@@ -11,5 +12,6 @@ int main(void) {
     //affiche_combat(&kraken, &joueur);
     Carte carte = initCarte(3, 3);
     afficherCarte(carte);
+    sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
     return 0;
 }

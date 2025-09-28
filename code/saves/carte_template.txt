@@ -1,4 +1,4 @@
-CARTE;longueur;largeur
+CARTE;hauteur;longueur
 CARTE;3;3
 JOUEUR;PV;PV_max;oxygène;oxygène_max;fatigue;perles
 JOUEUR;100;100;100;100;0;0;
