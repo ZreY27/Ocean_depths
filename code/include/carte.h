@@ -15,6 +15,7 @@ typedef struct {
     TypeCase type;
     CreatureMarine creature;
     //Objet objets[10];
+    //int nbObjets;
     int visible;
     int joueur;
 }Case;
