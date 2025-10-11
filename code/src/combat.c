@@ -14,19 +14,19 @@ Chaque tour, chaque personnage gagne des points d'action en fonction de sa vites
 Une fois le seuil atteint, il peut agir (attaquer, utiliser un objet, etc.) 
 et perd des points d'action.
 */
-void lancerCombat(Plongeur* joueur, CreatureMarine* creature);
+void lancerCombat(Plongeur* joueur, CreatureMarine* creature); // En cours...
 
-void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature);
-void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature);
-int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature);
+void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
+void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
+int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature); // Faite
 
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature);
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature); // Version améliorable
 
 /*
 Algorithme et système d'IA à peaufiner plus tard. 
 Pour l'instant effectue une action aléatoire simple.
 */
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature); // <<< BONUS POSSIBLE
+void creatureAgit(Plongeur* joueur, CreatureMarine* creature); // Version améliorable
 
 /* 
 Fonctions à déplacer dans joueur.c ou inventaire.c + creature.c plus tard
@@ -45,12 +45,16 @@ void creatureJugeDeFou(); //TODO
 void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); //TODO
 void creatureFuit(Plongeur* joueur, CreatureMarine* creature); //TODO
 
+// ----------------------- Développement des fonctions ----------------------- //
 
 void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
 
+    int fuite_reussie = 0;
+
     reinitialiserPointsAction(joueur, creature);
     
-    while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0) {
+    // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
+    while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && !fuite_reussie) {
         
         augmenterPointsAction(joueur, creature);
         
@@ -87,16 +91,19 @@ void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
     
 }
 
+// Version finale
 void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature) {
     joueur->points_action = 0;
     creature->points_action = 0;
 }
 
+// Version finale
 void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature) {
     joueur->points_action += joueur->vitesse;
     creature->points_action += creature->vitesse;
 }
 
+// Version finale
 int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature) {
     int joueurPret = (joueur->points_action >= SEUIL_ACTION);
     int creaturePrete = (creature->points_action >= SEUIL_ACTION);
@@ -115,6 +122,7 @@ int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature) {
     }
 }
 
+// Version améliorable
 void joueurAgit(Plongeur* joueur, CreatureMarine* creature) {
 
     int choix_qui_met_fin_tour = 0;
@@ -161,6 +169,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature) {
 
 }
 
+// Version améliorable
 void creatureAgit(Plongeur* joueur, CreatureMarine* creature) {
     int action_aleatoire = rand() % 3;
 
