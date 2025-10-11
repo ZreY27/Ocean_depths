@@ -6,12 +6,16 @@
 #include "code/include/carte.h"
 #include "code/include/sauvegarde.h"
 
+
 int main(void) {
     Plongeur joueur = initJoueur();
     CreatureMarine kraken = initCreature();
     //afficheCombat(&kraken, &joueur);
-    Carte carte = initCarte(5, 5);
+    Carte carte = initCarte(10, 5);
     afficherCarte(carte);
     sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
+    for (int i = 0;i<10;i++) {
+        deplacement(&joueur, carte);
+    }
     return 0;
 }

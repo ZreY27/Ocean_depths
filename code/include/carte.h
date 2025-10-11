@@ -4,11 +4,12 @@
 #include "inventaire.h"
 
 typedef enum {
-    SURFACE = 0,
-    ALGUES   = 1,
-    EPAVE   = 2,
-    GROTTE  = 3,
-    PROFONDEUR = 4
+    SURFACE,
+    VIDE,
+    ALGUES,
+    EPAVE,
+    GROTTE,
+    PROFONDEUR
 } TypeCase;
 
 typedef struct {
@@ -28,5 +29,5 @@ typedef struct {
 
 Case initCase(TypeCase type);
 Carte initCarte(int hauteur, int longueur);
-
+const char* getEmojiForType(TypeCase type);
 #endif

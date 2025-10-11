@@ -58,19 +58,18 @@ void deplacement(Plongeur* joueur, Carte carte) {
         return;
     }
 
-    // Vérifie si la case est accessible (par exemple non bloquée)
-    Case prochaine_case = carte.cases[newY][newX];
-    if (prochaine_case.type == GROTTE) {
-        printf("La grotte bloque le passage !\n");
-        deplacement(joueur, carte);
-        return;
-    }
 
     // Met à jour la position du joueur
     carte.cases[joueur->y][joueur->x].joueur = 0;  // ancienne position
     joueur->x = newX;
     joueur->y = newY;
+    joueur->niveau_fatigue++;
+    if (newX == 0) {
+        joueur->niveau_oxygene += 100;
+        joueur->niveau_oxygene % joueur->niveau_oxygene_max;
+    } else joueur->niveau_oxygene_max -= newX;
     carte.cases[joueur->y][joueur->x].joueur = 1;  // nouvelle position
+    carte.cases[joueur->y][joueur->x].visible = 1;  // nouvelle position
 
     afficherCarte(carte);
 }
