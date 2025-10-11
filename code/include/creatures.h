@@ -1,7 +1,6 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-
 typedef struct {
     int id;  // identifiant unique pour cibler
     char nom[30];
@@ -17,6 +16,18 @@ typedef struct {
     int points_action; // ATB en combat (Active Time Battle)
 
 }CreatureMarine;
+
+/*
+typedef enum {
+    OBSERVE,
+    ATTAQUE_LEGERE,
+    ATTAQUE_LOURDE,
+    //CRIE_DE_GUERRE,
+    //CRIE_INTIMIDANT,
+    FUITE,
+    NB_ACTION_POSSIBLE
+} PlageActionCreature;
+ */
 
 CreatureMarine initCreature();
 
