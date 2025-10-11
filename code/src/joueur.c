@@ -4,7 +4,7 @@
 
 Plongeur initJoueur() {
     Plongeur joueur;
-    joueur.points_de_vie = 100;
+    joueur.points_de_vie_actuels = 100;
     joueur.points_de_vie_max = 100;
     joueur.niveau_oxygene = 100;
     joueur.niveau_oxygene_max = 100;

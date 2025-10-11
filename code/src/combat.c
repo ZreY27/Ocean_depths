@@ -22,6 +22,13 @@ int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature);
 void joueurAgit(Plongeur* joueur, CreatureMarine* creature);
 void creatureAgit(Plongeur* joueur, CreatureMarine* creature);
 
+void choixAttaque(Plongeur* joueur, CreatureMarine* creature);
+void utiliserObjet(Plongeur* joueur, CreatureMarine* creature);
+void ouvrirBestiaire();
+void fuir(Plongeur* joueur, CreatureMarine* creature);
+
+
+
 
 
 void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
