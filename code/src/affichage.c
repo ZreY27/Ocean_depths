@@ -20,10 +20,25 @@ void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
 }
 
 void afficherCarte(Carte carte) {
-    for (int i = 0;i < carte.hauteur;i++) {
-        for (int j = 0;j < carte.longueur;j++) {
-            printf("%d ", carte.cases[i][j].type);
+    for (int i = 0; i < carte.hauteur; i++) {
+        for (int j = 0; j < carte.longueur; j++) {
+
+            if (carte.cases[i][j].joueur == 1) {
+                printf("🤿 "); // position du joueur
+            }
+            else if (carte.cases[i][j].visible == 0) {
+                printf("⬛ "); // zone non explorée
+            }
+            else {
+                printf("%s ", getEmojiForType(carte.cases[i][j].type));
+            }
         }
         printf("\n");
     }
+
+    printf("\n");
+}
+
+void afficheJoueur(Plongeur * joueur) {
+    printf("");
 }

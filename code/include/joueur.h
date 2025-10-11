@@ -2,6 +2,8 @@
 #define JOUEUR_H
 #include "inventaire.h"
 
+#include "carte.h"
+
 typedef struct {
      int points_de_vie_actuels;
      int points_de_vie_max;
@@ -17,8 +19,12 @@ typedef struct {
      int defense;
 
      Inventaire inventaire;
+  
+     int x;
+     int y;
  }Plongeur;
 
 Plongeur initJoueur();
+void deplacement(Plongeur* joueur, Carte carte);
 
 #endif
