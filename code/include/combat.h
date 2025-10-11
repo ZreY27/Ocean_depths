@@ -8,4 +8,9 @@ typedef enum {
     ACTION_DOUBLE
 } EtatAction;
 
+typedef enum{
+    FUITE_ECHOUEEE,
+    FUITE_REUSSIE
+} EtatFuite;
+
 #endif

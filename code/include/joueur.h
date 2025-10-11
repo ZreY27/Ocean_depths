@@ -25,6 +25,8 @@ typedef struct {
  }Plongeur;
 
 Plongeur initJoueur();
+
+
 void deplacement(Plongeur* joueur, Carte carte);
 
 #endif

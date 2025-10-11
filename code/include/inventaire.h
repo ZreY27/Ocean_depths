@@ -1,5 +1,5 @@
-#ifndef CARTE_H
-#define CARTE_H
+#ifndef INVENTAIRE_H
+#define INVENTAIRE_H
 
 typedef struct {
     int capacite;

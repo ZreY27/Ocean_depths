@@ -25,9 +25,10 @@ typedef struct {
     int hauteur;
     int longueur;
     Case **cases;
-}Carte;
+} Carte;
 
 Case initCase(TypeCase type);
 Carte initCarte(int hauteur, int longueur);
 const char* getEmojiForType(TypeCase type);
+
 #endif

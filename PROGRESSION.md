@@ -3,7 +3,7 @@
 . Structure de données suggérée  
 . Génération  
 
-Étape 2 : Système d'Attaque du Plongeur❌  
+Étape 2 : Système d'Attaque du Plongeur🔄  
 . Ressources du joueur  
 . Interface de combat (exemple)  
 . Mécaniques de combat  
