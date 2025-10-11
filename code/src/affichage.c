@@ -22,7 +22,9 @@ void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
 void afficherCarte(Carte carte) {
     for (int i = 0;i < carte.hauteur;i++) {
         for (int j = 0;j < carte.longueur;j++) {
-            printf("%d ", carte.cases[i][j].type);
+            if (carte.cases[i][j].joueur == 1) {
+                printf("x ");
+            }else printf("%d ", carte.cases[i][j].type);
         }
         printf("\n");
     }

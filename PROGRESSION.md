@@ -19,7 +19,7 @@
 . Types de récompenses  
 . Gestion d'inventaire (exemple)  
 
-Étape 5 : Sauvegarde et Chargement❌  
+Étape 5 : Sauvegarde et Chargement🔄  
 . Données à sauvegarder  
 . Contraintes  
 . Exemple de structure de sauvegarde  

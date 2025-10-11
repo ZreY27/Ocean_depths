@@ -6,6 +6,8 @@
 Case initCase(TypeCase type) {
     Case _case;
     _case.type = type;
+    _case.visible = 0;
+    _case.joueur = 0;
     return _case;
 }
 
@@ -18,6 +20,9 @@ Carte initCarte(int hauteur, int longueur) {
         carte.cases[i] = malloc(sizeof(Case) * longueur);
         for (int j = 0; j < longueur; j++) {
             carte.cases[i][j] = initCase(SURFACE);
+            if (i == 0 && j == 0) {
+                carte.cases[i][j].joueur = 1;
+            }
         }
     }
     return carte;

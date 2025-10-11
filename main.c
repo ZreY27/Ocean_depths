@@ -9,8 +9,8 @@
 int main(void) {
     Plongeur joueur = initJoueur();
     CreatureMarine kraken = initCreature();
-    //affiche_combat(&kraken, &joueur);
-    Carte carte = initCarte(3, 3);
+    //afficheCombat(&kraken, &joueur);
+    Carte carte = initCarte(5, 5);
     afficherCarte(carte);
     sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
     return 0;
