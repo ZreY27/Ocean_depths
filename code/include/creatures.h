@@ -13,6 +13,9 @@ typedef struct {
     int vitesse;
     char effet_special[20]; // "paralysie", "poison", "aucun"
     int est_vivant;
+
+    int points_action; // ATB en combat (Active Time Battle)
+
 }CreatureMarine;
 
 CreatureMarine initCreature();
