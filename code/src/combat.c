@@ -8,42 +8,6 @@
 #include "inventaire.h"
 
 #define SEUIL_ACTION 100 
-/*
-Seuil de points d'action pour pouvoir agir.
-Chaque tour, chaque personnage gagne des points d'action en fonction de sa vitesse.
-Une fois le seuil atteint, il peut agir (attaquer, utiliser un objet, etc.) 
-et perd des points d'action.
-*/
-void lancerCombat(Plongeur* joueur, CreatureMarine* creature); // En cours...
-
-void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
-void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
-int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature); // Faite
-
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature); // Version améliorable
-
-/*
-Algorithme et système d'IA à peaufiner plus tard. 
-Pour l'instant effectue une action aléatoire simple.
-*/
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature); // Version améliorable
-
-/* 
-Fonctions à déplacer dans joueur.c ou inventaire.c + creature.c plus tard
-Les actions qui mettent fin au tour du joueur retournent 1, les autres 0.
-Cette implémentation permet de laisser le joueur revenir sur sa décision d'attaque ou non.
-À terme, il y aura plusieurs choix d'attaques (comme des compétences spéciales, etc.)
-*/
-int choixAttaque(Plongeur* joueur, CreatureMarine* creature); //TODO
-int ouvrirInventaire(Plongeur* joueur); //TODO
-int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
-int fuir(Plongeur* joueur, CreatureMarine* creature); //TODO
-void ouvrirBestiaire(); // <<< BONUS POSSIBLE
-
-
-void creatureJugeDeFou(); //TODO
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); //TODO
-void creatureFuit(Plongeur* joueur, CreatureMarine* creature); //TODO
 
 // ----------------------- Développement des fonctions ----------------------- //
 
@@ -56,28 +20,30 @@ void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
     // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
     while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && !fuite_reussie) {
         
+        
+
         augmenterPointsAction(joueur, creature);
         
         switch (verifierSeuilAction(joueur, creature)) {
 
             case ACTION_JOUEUR:
-                joueurAgit(joueur, creature);
+                joueurAgit(joueur, creature, &fuite_reussie);
                 break;
             
             case ACTION_CREATURE:
-                creatureAgit(joueur, creature);
+                creatureAgit(joueur, creature, &fuite_reussie);
                 break;
 
             case ACTION_DOUBLE:
                 if(joueur->points_action >= creature->points_action) {
-                    joueurAgit(joueur, creature);
+                    joueurAgit(joueur, creature, &fuite_reussie);
                     if(creature->points_de_vie_actuels > 0) {
-                        creatureAgit(joueur, creature);
+                        creatureAgit(joueur, creature, &fuite_reussie);
                     }
                 } else {
-                    creatureAgit(joueur, creature);
+                    creatureAgit(joueur, creature, &fuite_reussie);
                     if(joueur->points_de_vie_actuels > 0) {
-                        joueurAgit(joueur, creature);
+                        joueurAgit(joueur, creature, &fuite_reussie);
                     }
                 }
                 break;
@@ -122,8 +88,34 @@ int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature) {
     }
 }
 
+// Version finale
+int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue) {
+    int chanceFuite = 100;
+
+   // --- Influence de la différence de vitesse ---
+    int difference = (int)(((double)(vitesseEnnemi - vitesseJoueur) / vitesseJoueur) * 100.0);
+
+    if (difference > 0) {
+        // Ennemi plus rapide → malus
+        chanceFuite -= difference;
+    } else if (difference < 0) {
+        // Joueur plus rapide → bonus
+        chanceFuite += (-difference) / 2; // bonus atténué pour éviter 100% auto
+    }
+
+    // --- Influence de la fatigue ---
+    chanceFuite -= niveauFatigue * 10;
+    // --- Bornage ---
+    if (chanceFuite < 0)  chanceFuite = 0;
+    if (chanceFuite > 100) chanceFuite = 100;
+
+    return chanceFuite;
+}
+
+// ----------------------------------- JOUEUR ----------------------------------- //
+
 // Version améliorable
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature) {
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) {
 
     int choix_qui_met_fin_tour = 0;
     
@@ -155,7 +147,8 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature) {
                 break;
             
             case 4:
-                choix_qui_met_fin_tour = fuir(joueur, creature);
+                fuite_reussie = fuir(joueur, creature);
+                choix_qui_met_fin_tour = 1; // Fuir met fin au tour
                 break;
 
             default:
@@ -166,11 +159,66 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature) {
         }
     }
 
+}
+
+int choixAttaque(Plongeur* joueur, CreatureMarine* creature){
+    return 1; // Met fin au tour
+}
+
+int ouvrirInventaire(Plongeur* joueur){
+    return 0; // Ne met pas fin au tour
+}
+
+int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
+    return 1; // Met fin au tour
+}
+
+int fuir(Plongeur* joueur, CreatureMarine* creature){
+
+    int chanceFuite = calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue);
+    int tirage = rand() % 100;
+    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
+
+    if (tirage < chanceFuite) {
+
+        printf("Fuite réussie !\n");
+        return FUITE_REUSSIE;
+
+    } else {
+
+        printf("Fuite échouée !\n");
+        return FUITE_ECHOUEEE;
+
+    }
+}
+
+void ouvrirBestiaire(){
 
 }
 
+// ----------------------------------- CRÉATURE ---------------------------------- //
+
 // Version améliorable
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature) {
+void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) {
+    
+    // -- Vérifie les effets de statut avant d'agir --
+
+    // Empoisonnement
+    if (creature->est_empoisonne == 1) {
+        creature->points_de_vie_actuels -= creature->points_de_vie_max * 0.05; // Perte de 5% des PV max
+        if (creature->points_de_vie_actuels <= 0) {
+            return; // La créature meurt, elle ne peut pas agir
+        }
+    }
+
+    // Étourdissement
+    if (creature->est_etourdi == 1){
+        creature->est_etourdi = 0; // L'effet d'étourdissement dure un tour
+        return; // La créature perd son tour
+    }
+
+    // -- La créature joue son tour --
+
     int action_aleatoire = rand() % 3;
 
     switch (action_aleatoire)
@@ -184,7 +232,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature) {
         break;
         
     case 2:
-        creatureFuit(joueur, creature);
+        // creatureFuit(joueur, creature);
         break;  
 
     // Juste au cas où
@@ -192,5 +240,17 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature) {
         creatureJugeDeFou();
         break;
     }
-    
 }
+
+void creatureJugeDeFou(){
+    printf("La créature vous observe avec curiosité.\n");
+}
+
+void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
+    printf("La créature attaque !\n");
+}
+
+void creatureFuit(Plongeur* joueur, CreatureMarine* creature){
+    printf("La créature a fui !\n");
+}
+

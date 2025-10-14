@@ -14,6 +14,9 @@ typedef struct {
     int est_vivant;
 
     int points_action; // ATB en combat (Active Time Battle)
+    int a_fui; // 0 = non, 1 = oui
+    int est_empoisonne; // 0 = non, 1 = oui
+    int est_etourdi; // 0 = non, 1 = oui
 
 }CreatureMarine;
 

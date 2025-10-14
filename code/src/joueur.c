@@ -7,6 +7,8 @@
 
 #include "carte.h"
 
+
+
 Plongeur initJoueur() {
     Plongeur joueur;
     joueur.points_de_vie_actuels = 100;
@@ -20,8 +22,6 @@ Plongeur initJoueur() {
     joueur.y = 0;
     return  joueur;
 }
-
-#include <stdio.h>
 
 void deplacement(Plongeur* joueur, Carte carte) {
     char saisie;
