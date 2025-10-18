@@ -143,6 +143,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
     // Empoisonnement
     if(joueur->est_empoisonne == EST_EMPOISONNE) {
         joueur->points_de_vie_actuels -= joueur->points_de_vie_max * 0.05; // Perte de 5% des PV max
+        printf("Le plongeur souffre du poison.\n");
         if (joueur->points_de_vie_actuels <= 0) {
             return; // Le joueur meurt, il ne peut pas agir
         }
@@ -151,6 +152,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
     // Étourdissement
     if (joueur->est_etourdi == EST_ETOURDI){
         joueur->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
+        printf("Le plongeur est etourdi et ne peut pas agir ce tour-ci.\n");
         return; // Le joueur perd son tour
     }
     
@@ -366,6 +368,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
     // Empoisonnement
     if (creature->est_empoisonne == EST_EMPOISONNE) {
         creature->points_de_vie_actuels -= creature->points_de_vie_max * 0.05; // Perte de 5% des PV max
+        printf("La creature souffre du poison.\n");
         if (creature->points_de_vie_actuels <= 0) {
             return; // La créature meurt, elle ne peut pas agir
         }
@@ -374,6 +377,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
     // Étourdissement
     if (creature->est_etourdi == EST_ETOURDI){
         creature->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
+        printf("La creature est etourdie et ne peut pas agir ce tour-ci.\n");
         return; // La créature perd son tour
     }
 
