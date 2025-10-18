@@ -7,6 +7,6 @@
 
 void afficheCombat(CreatureMarine * creature, Plongeur * joueur);
 void afficherCarte(Carte carte);
-void afficheJoueur(Plongeur * joueur);
+void afficheJoueurStat(Plongeur * joueur);
 
 #endif

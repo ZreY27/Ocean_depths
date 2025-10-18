@@ -57,17 +57,37 @@ void deplacement(Plongeur* joueur, Carte carte) {
         deplacement(joueur, carte); // redemande
         return;
     }
-
-
+    switch (carte.cases[newY][newX].type) {
+        case ALGUES: {
+            // 1 chance sur 5 de trouver 10 perles
+            int chance = rand() % 5; // 0 à 4
+            if (chance == 0) {
+                joueur->perles += 10;
+                printf("🌿 Vous fouillez les algues et trouvez 10 perles ! 💎\n");
+            } else {
+                printf("🌿 Rien d'intéressant dans ces algues...\n");
+            }
+            break;
+        }
+        case EPAVE: {
+            // Soit 10 soit 50 perles (1 chance sur 2)
+            int gain = (rand() % 2 == 0) ? 10 : 50;
+            joueur->perles += gain;
+            printf("⚓ Vous explorez une épave et trouvez %d perles ! 💰\n", gain);
+            break;
+        }
+        default:
+            break;
+    }
     // Met à jour la position du joueur
     carte.cases[joueur->y][joueur->x].joueur = 0;  // ancienne position
     joueur->x = newX;
     joueur->y = newY;
     joueur->niveau_fatigue++;
-    if (newX == 0) {
-        joueur->niveau_oxygene += 100;
-        joueur->niveau_oxygene % joueur->niveau_oxygene_max;
-    } else joueur->niveau_oxygene_max -= newX;
+    if (newY == 0) {
+        joueur->niveau_oxygene += 99;
+        joueur->niveau_oxygene = joueur->niveau_oxygene % joueur->niveau_oxygene_max;
+    } else joueur->niveau_oxygene -= newY;
     carte.cases[joueur->y][joueur->x].joueur = 1;  // nouvelle position
     carte.cases[joueur->y][joueur->x].visible = 1;  // nouvelle position
 
