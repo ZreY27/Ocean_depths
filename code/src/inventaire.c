@@ -1,7 +1,6 @@
-#include "inventaire.h"
+#include "../include/inventaire.h"
 
 #include <stdlib.h>
-
 
 Inventaire initInventaire() {
     Inventaire inventaire;
