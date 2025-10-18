@@ -13,15 +13,12 @@
 
 void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
 
-    int fuite_reussie = 0;
-
+    int fuite_reussie = FUITE_ECHOUEEE;
     reinitialiserPointsAction(joueur, creature);
     
     // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
     while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && !fuite_reussie) {
         
-        
-
         augmenterPointsAction(joueur, creature);
         
         switch (verifierSeuilAction(joueur, creature)) {
@@ -70,7 +67,7 @@ void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature) {
 }
 
 // Version finale
-int verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature) {
+EtatAction verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature) {
     int joueurPret = (joueur->points_action >= SEUIL_ACTION);
     int creaturePrete = (creature->points_action >= SEUIL_ACTION);
 
@@ -115,7 +112,7 @@ int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue)
 // ----------------------------------- JOUEUR ----------------------------------- //
 
 // Version améliorable
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) {
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
 
     int choix_qui_met_fin_tour = 0;
     
@@ -139,7 +136,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) 
                 break;
 
             case 2:
-                choix_qui_met_fin_tour = utiliserObjet(joueur, creature);
+                choix_qui_met_fin_tour = ouvrirInventaire(joueur, creature);
                 break;
             
             case 3:
@@ -147,8 +144,8 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) 
                 break;
             
             case 4:
-                fuite_reussie = fuir(joueur, creature);
-                choix_qui_met_fin_tour = 1; // Fuir met fin au tour
+                *fuite_etat = fuir(joueur, creature);
+                choix_qui_met_fin_tour = FIN_DE_TOUR; // Fuir met fin au tour
                 break;
 
             default:
@@ -161,11 +158,91 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) 
 
 }
 
-int choixAttaque(Plongeur* joueur, CreatureMarine* creature){
-    return 1; // Met fin au tour
+FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature){
+    
+    int attaque_valide = ATTAQUE_INVALIDE;
+    
+    while (attaque_valide == ATTAQUE_INVALIDE){
+
+        printf("Choisissez votre attaque :\n");
+        printf("1. Attaque légère\n");
+        printf("2. Attaque lourde\n");
+        printf("3. Défense\n");
+        printf("4. Repos\n");
+        printf("0. Retour au choix du joueur\n");
+
+       choixAttaquePlongeur attaque = scanf("%d");
+
+        switch (attaque) {
+
+            case ATTAQUE_LEGERE:
+                attaqueLegere(joueur, creature);
+                return FIN_DE_TOUR;
+
+            case ATTAQUE_LOURDE:
+                /* code *
+                return FIN_DE_TOUR;
+            
+            case DEFENSE:
+                /* code */ 
+                return FIN_DE_TOUR;
+
+            case REPOS:
+                /* code */
+                return FIN_DE_TOUR;
+                
+            case RETOUR_CHOIX_JOUEUR:
+                return PAS_FIN_DE_TOUR;
+            
+            default:
+                printf("Choix invalide.\n");
+                break;
+        }
+    }
+
+    // Sécurité : attaque toujours valide ici
+    return FIN_DE_TOUR;
 }
 
-int ouvrirInventaire(Plongeur* joueur){
+void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
+    printf("Vous portez un coup léger à votre ennemi\n");
+
+    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur
+    int degat = (rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
+                + joueur->attaque_minimale;
+
+
+    // prise en compte de la défense de la créature
+    degat -= creature->defense / 10; // La défense réduit les dégâts de 10%
+
+    // prise en compte des armes équipées
+    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
+
+}
+
+void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
+
+}
+
+void defense(Plongeur* joueur){
+    //augmente de 50% la défense du plongeur jusqu'au prochain tour
+    //redonne un peu d'energie : un point de fatigue (baisse la fatigue)
+    joueur->defense += joueur->defense / 2;
+    if(joueur->niveau_fatigue > 0){
+        joueur->niveau_fatigue -= 1;
+    }
+}
+
+void repos(Plongeur* joueur){
+    //redonne deux points de fatigue (baisse la fatigue)
+    if(joueur->niveau_fatigue > 1){
+        joueur->niveau_fatigue -= 2;
+    } else {
+        joueur->niveau_fatigue = 0;
+    }
+}
+
+FinDeTourPlongeur ouvrirInventaire(Plongeur* joueur){
     return 0; // Ne met pas fin au tour
 }
 
@@ -173,7 +250,7 @@ int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
     return 1; // Met fin au tour
 }
 
-int fuir(Plongeur* joueur, CreatureMarine* creature){
+EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature){
 
     int chanceFuite = calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue);
     int tirage = rand() % 100;
@@ -181,12 +258,12 @@ int fuir(Plongeur* joueur, CreatureMarine* creature){
 
     if (tirage < chanceFuite) {
 
-        printf("Fuite réussie !\n");
+        printf("Fuite reussie !\n");
         return FUITE_REUSSIE;
 
     } else {
 
-        printf("Fuite échouée !\n");
+        printf("Fuite echouee !\n");
         return FUITE_ECHOUEEE;
 
     }
