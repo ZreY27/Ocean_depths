@@ -46,7 +46,7 @@ Pour l'instant effectue une action aléatoire simple.
 */
 void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Version améliorable
 
-void creatureJugeDeFou(); //TODO
+void creatureJugeDeFou(); // Faite
 void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); //TODO
 void creatureFuit(Plongeur* joueur, CreatureMarine* creature); //TODO
 

@@ -243,7 +243,25 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
 }
 
 void creatureJugeDeFou(){
-    printf("La créature vous observe avec curiosité.\n");
+    int texte_aleatoire = rand() % 3;
+    switch (texte_aleatoire)
+    {
+    case 0:
+        printf("La créature vous observe avec curiosité.");
+        break;
+    
+    case 1:
+        printf("La créature émet un son étrange.");
+        break;
+
+    case 2:
+        printf("La créature nage en cercles autour de vous.");
+        break;
+
+    default:
+        break;
+    }
+    
 }
 
 void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
