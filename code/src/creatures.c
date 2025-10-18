@@ -17,3 +17,6 @@ CreatureMarine initCreature() {
     creature.est_vivant = 1;
     return creature;
 }
+
+
+

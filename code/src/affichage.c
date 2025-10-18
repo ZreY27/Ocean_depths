@@ -39,6 +39,26 @@ void afficherCarte(Carte carte) {
     printf("\n");
 }
 
-void afficheJoueur(Plongeur * joueur) {
-    printf("");
+void afficherJauge(const char* label, int valeur, int max) {
+    int largeur = 20; // longueur de la barre
+    int nbBloc = (valeur * largeur) / max;
+
+    printf("%-10s [", label);
+    for (int i = 0; i < largeur; i++) {
+        if (i < nbBloc) printf("#");
+        else printf("-");
+    }
+    printf("] %d/%d\n", valeur, max);
+}
+
+void afficheJoueurStat(Plongeur *joueur) {
+    printf("\n===== STATS DU PLONGEUR =====\n");
+
+    afficherJauge("❤️ Vie", joueur->points_de_vie, joueur->points_de_vie_max);
+    afficherJauge("💧 Oxygène", joueur->niveau_oxygene, joueur->niveau_oxygene_max);
+
+    printf("😴 Fatigue : %d / 5\n", joueur->niveau_fatigue);
+    printf("💎 Perles  : %d\n", joueur->perles);
+
+    printf("=============================\n\n");
 }
