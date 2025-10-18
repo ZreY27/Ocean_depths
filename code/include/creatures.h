@@ -4,11 +4,17 @@
 typedef struct {
     int id;  // identifiant unique pour cibler
     char nom[30];
+
     int points_de_vie_max;
     int points_de_vie_actuels;
+    
     int attaque_minimale;
     int attaque_maximale;
+    
     int defense;
+    int defense_supplementaire; // bonus temporaire en combat lors de la prise de position défensive
+
+    int niveau_fatigue; // 0 à 3
     int vitesse;
     char effet_special[20]; // "paralysie", "poison", "aucun"
     int est_vivant;

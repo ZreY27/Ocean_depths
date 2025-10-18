@@ -10,13 +10,23 @@ void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
     printf("Perles : %d\n", joueur->perles);
 
     //affiche la vie du joueur
+    printf("Joueur :\n");
     printf("[");
     for (int i = 0;i < joueur->points_de_vie_max;i++) {
         if (joueur->points_de_vie_actuels>=i) {
             printf("0");
         } else printf(".");
     }
-    printf("]");
+    printf("]\n");
+
+    printf("Mob : \n");
+    printf("[");
+    for (int i = 0;i < creature->points_de_vie_max;i++) {
+        if (creature->points_de_vie_actuels>=i) {
+            printf("0");
+        } else printf(".");
+    }
+    printf("]\n\n");
 }
 
 void afficherCarte(Carte carte) {

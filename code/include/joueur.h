@@ -16,7 +16,7 @@ typedef struct {
     int points_de_vie_max;
     int niveau_oxygene;
     int niveau_oxygene_max;
-    int niveau_fatigue; // 0 à 5
+    int niveau_fatigue; // 0 à 3
     int perles; // monnaie du jeu
  
     int vitesse; // influence l'ordre d'action en combat
@@ -24,6 +24,8 @@ typedef struct {
     int attaque_minimale;
     int attaque_maximale;
     int defense;
+    int defense_supplementaire; // bonus temporaire en combat lors de la prise de position défensive
+
     int a_fui; // 0 = non, 1 = oui
     int est_empoisonne; // 0 = non, 1 = oui
     int est_etourdi; // 0 = non, 1 = oui
