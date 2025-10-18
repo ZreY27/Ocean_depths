@@ -12,7 +12,7 @@ void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
     //affiche la vie du joueur
     printf("[");
     for (int i = 0;i < joueur->points_de_vie_max;i++) {
-        if (joueur->points_de_vie>=i) {
+        if (joueur->points_de_vie_actuels>=i) {
             printf("0");
         } else printf(".");
     }
@@ -54,11 +54,19 @@ void afficherJauge(const char* label, int valeur, int max) {
 void afficheJoueurStat(Plongeur *joueur) {
     printf("\n===== STATS DU PLONGEUR =====\n");
 
-    afficherJauge("❤️ Vie", joueur->points_de_vie, joueur->points_de_vie_max);
+    afficherJauge("❤️ Vie", joueur->points_de_vie_actuels, joueur->points_de_vie_max);
     afficherJauge("💧 Oxygène", joueur->niveau_oxygene, joueur->niveau_oxygene_max);
 
     printf("😴 Fatigue : %d / 5\n", joueur->niveau_fatigue);
     printf("💎 Perles  : %d\n", joueur->perles);
 
     printf("=============================\n\n");
+}
+
+void nettoyerAffichage() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }

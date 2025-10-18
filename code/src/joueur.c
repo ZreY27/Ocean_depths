@@ -4,6 +4,7 @@
 #include "../include/joueur.h"
 #include "../include/carte.h"
 #include "../include/affichage.h"
+#include "../include/inventaire.h"
 
 #include "carte.h"
 
@@ -20,6 +21,7 @@ Plongeur initJoueur() {
     joueur.perles = 0;
     joueur.x = 0;
     joueur.y = 0;
+    joueur.inventaire = initInventaire();
     return  joueur;
 }
 
@@ -27,7 +29,7 @@ void deplacement(Plongeur* joueur, Carte carte) {
     char saisie;
 
     printf("Utilisez zqsd pour vous déplacer : ");
-    scanf(" %c", &saisie);  // espace avant %c pour ignorer '\n'
+    scanf(" %s", &saisie);  // espace avant %c pour ignorer '\n'
 
     int newX = joueur->x;
     int newY = joueur->y;
