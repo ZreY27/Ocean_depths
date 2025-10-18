@@ -6,8 +6,15 @@ typedef enum {
     FLASH,
     TORPILLE_DE_POCHE,
     DIFFUSEUR_TOXIQUE,
-
 } TypeObjet;
+
+
+typedef enum {
+    POING,
+    COUTEAU,
+    HARPON,
+    LASER
+} TypeArme;
 
 typedef struct {
     int type;
@@ -17,9 +24,12 @@ typedef struct {
 } Objet;
 
 typedef struct {
+    TypeArme arme;
     int capacite;
     int nb_objets;
     Objet* objets;
 } Inventaire;
+
+Inventaire initInventaire();
 
 #endif
