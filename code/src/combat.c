@@ -377,8 +377,10 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
         return; // La créature perd son tour
     }
 
-    // -- La créature joue son tour --
+    // Enleve la garde supplémentaire (si prise de position défensive au tour précédent)
+    creature->defense_supplementaire = 0;
 
+    // -- La créature joue son tour --
     ChoixAttaqueCreature action_aleatoire = (int) (rand() % NB_CHOIX_CREATURE);
 
     switch (action_aleatoire)
