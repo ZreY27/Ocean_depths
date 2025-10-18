@@ -6,41 +6,50 @@
 #include "combat.h"
 #include "creatures.h"
 #include "inventaire.h"
+#include "affichage.h"
 
-#define SEUIL_ACTION 100 
+
 
 // ----------------------- Développement des fonctions ----------------------- //
 
 void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
 
-    int fuite_reussie = FUITE_ECHOUEEE;
+    int fuite_reussie_joueur = FUITE_ECHOUEEE;
+    int fuite_reussie_creature = FUITE_ECHOUEEE;
     reinitialiserPointsAction(joueur, creature);
     
     // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
-    while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && !fuite_reussie) {
+    while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && fuite_reussie_joueur == FUITE_ECHOUEEE && fuite_reussie_creature == FUITE_ECHOUEEE) {
         
         augmenterPointsAction(joueur, creature);
-        
+        //printf("Actions : Joueur=%d, Creature=%d\n", joueur->points_action, creature->points_action);
+
         switch (verifierSeuilAction(joueur, creature)) {
 
             case ACTION_JOUEUR:
-                joueurAgit(joueur, creature, &fuite_reussie);
+                afficheCombat(creature, joueur);
+                joueurAgit(joueur, creature, &fuite_reussie_joueur);
                 break;
             
             case ACTION_CREATURE:
-                creatureAgit(joueur, creature, &fuite_reussie);
+                afficheCombat(creature, joueur);
+                creatureAgit(joueur, creature, &fuite_reussie_creature);
                 break;
 
             case ACTION_DOUBLE:
                 if(joueur->points_action >= creature->points_action) {
-                    joueurAgit(joueur, creature, &fuite_reussie);
+                    afficheCombat(creature, joueur);
+                    joueurAgit(joueur, creature, &fuite_reussie_joueur);
                     if(creature->points_de_vie_actuels > 0) {
-                        creatureAgit(joueur, creature, &fuite_reussie);
+                        afficheCombat(creature, joueur);
+                        creatureAgit(joueur, creature, &fuite_reussie_creature);
                     }
                 } else {
-                    creatureAgit(joueur, creature, &fuite_reussie);
+                    afficheCombat(creature, joueur);
+                    creatureAgit(joueur, creature, &fuite_reussie_creature);
                     if(joueur->points_de_vie_actuels > 0) {
-                        joueurAgit(joueur, creature, &fuite_reussie);
+                        afficheCombat(creature, joueur);
+                        joueurAgit(joueur, creature, &fuite_reussie_joueur);
                     }
                 }
                 break;
@@ -50,6 +59,15 @@ void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
                 break;
         }
     
+    }
+
+    //verifier fin de combat
+    if (joueur->points_de_vie_actuels <= 0) {
+        printf("Vous avez ete vaincu...\n");
+    } else if (creature->points_de_vie_actuels <= 0) {
+        printf("Vous avez vaincu la creature !\n");
+    } else if (fuite_reussie_joueur == FUITE_REUSSIE) {
+        printf("Vous avez reussi a fuir le combat !\n");
     }
     
 }
@@ -64,6 +82,12 @@ void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature) {
 void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature) {
     joueur->points_action += joueur->vitesse;
     creature->points_action += creature->vitesse;
+}
+void enleverPointsActionTourJoueur(Plongeur* joueur){
+    joueur->points_action -= SEUIL_ACTION;
+}
+void enleverPointsActionTourCreature(CreatureMarine* creature){
+    creature->points_action -= SEUIL_ACTION;
 }
 
 // Version finale
@@ -114,7 +138,26 @@ int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue)
 // Version améliorable
 void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
 
-    int choix_qui_met_fin_tour = 0;
+    // Vérifie les effets de statut avant d'agir
+
+    // Empoisonnement
+    if(joueur->est_empoisonne == EST_EMPOISONNE) {
+        joueur->points_de_vie_actuels -= joueur->points_de_vie_max * 0.05; // Perte de 5% des PV max
+        if (joueur->points_de_vie_actuels <= 0) {
+            return; // Le joueur meurt, il ne peut pas agir
+        }
+    }
+
+    // Étourdissement
+    if (joueur->est_etourdi == EST_ETOURDI){
+        joueur->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
+        return; // Le joueur perd son tour
+    }
+    
+    // Enleve la garde supplémentaire (si prise de position défensive au tour précédent)
+    joueur->defense_supplementaire = 0;
+
+    int choix_qui_met_fin_tour = PAS_FIN_DE_TOUR;
     
     while(!choix_qui_met_fin_tour) {
 
@@ -149,12 +192,14 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
                 break;
 
             default:
-                printf("Choix invalide. Veuillez réessayer.\n");
+                printf("Choix invalide. Veuillez reessayer.\n");
                 break;
 
 
         }
     }
+
+    enleverPointsActionTourJoueur(joueur);
 
 }
 
@@ -165,31 +210,37 @@ FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature){
     while (attaque_valide == ATTAQUE_INVALIDE){
 
         printf("Choisissez votre attaque :\n");
-        printf("1. Attaque légère\n");
+        printf("1. Attaque legere\n");
         printf("2. Attaque lourde\n");
-        printf("3. Défense\n");
+        printf("3. Defense\n");
         printf("4. Repos\n");
         printf("0. Retour au choix du joueur\n");
 
-       choixAttaquePlongeur attaque = scanf("%d");
+       ChoixAttaquePlongeur attaque;
+       
+       scanf("%d", &attaque);
 
         switch (attaque) {
 
             case ATTAQUE_LEGERE:
                 attaqueLegere(joueur, creature);
-                return FIN_DE_TOUR;
+                attaque_valide = ATTAQUE_VALIDE;
+                break;
 
             case ATTAQUE_LOURDE:
-                /* code *
-                return FIN_DE_TOUR;
+                attaqueLourde(joueur, creature);
+                attaque_valide = ATTAQUE_VALIDE;
+                break;
             
             case DEFENSE:
-                /* code */ 
-                return FIN_DE_TOUR;
+                defense(joueur);
+                attaque_valide = ATTAQUE_VALIDE;
+                break;
 
             case REPOS:
-                /* code */
-                return FIN_DE_TOUR;
+                repos(joueur);
+                attaque_valide = ATTAQUE_VALIDE;
+                break;
                 
             case RETOUR_CHOIX_JOUEUR:
                 return PAS_FIN_DE_TOUR;
@@ -205,29 +256,61 @@ FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature){
 }
 
 void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
-    printf("Vous portez un coup léger à votre ennemi\n");
 
     // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur
     int degat = (rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
                 + joueur->attaque_minimale;
 
-
     // prise en compte de la défense de la créature
-    degat -= creature->defense / 10; // La défense réduit les dégâts de 10%
+    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
 
     // prise en compte des armes équipées
     degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
+
+    // s'assure que les dégâts ne sont pas négatifs
+    if (degat < 0) {
+        degat = 0;
+    }
+   
+    // applique les dégâts à la créature
+    creature->points_de_vie_actuels -= degat;
+    
+    // affiche les dégâts infligés
+    printf("Vous infligez %d points de degats a la creature.\n", degat);
 
 }
 
 void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
 
+    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur multipliées par 3.5
+        int degat = (int)((rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
+                    + joueur->attaque_minimale);
+
+    // prise en compte de la défense de la créature
+    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
+
+    // prise en compte des armes équipées
+    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
+
+    // s'assure que les dégâts ne sont pas négatifs
+    if (degat < 0) {
+        degat = 0;
+    }
+
+    // multiplie les dégâts par le multiplicateur
+    degat = (int)(degat * MULTIPLICATEUR_ATTAQUE_LOURDE);
+   
+    // applique les dégâts à la créature
+    creature->points_de_vie_actuels -= degat;
+    
+    // affiche les dégâts infligés
+    printf("Vous infligez %d points de degats a la creature.\n", degat);
 }
 
 void defense(Plongeur* joueur){
     //augmente de 50% la défense du plongeur jusqu'au prochain tour
     //redonne un peu d'energie : un point de fatigue (baisse la fatigue)
-    joueur->defense += joueur->defense / 2;
+    joueur->defense_supplementaire = joueur->defense / 2;
     if(joueur->niveau_fatigue > 0){
         joueur->niveau_fatigue -= 1;
     }
@@ -242,12 +325,12 @@ void repos(Plongeur* joueur){
     }
 }
 
-FinDeTourPlongeur ouvrirInventaire(Plongeur* joueur){
-    return 0; // Ne met pas fin au tour
+FinDeTourPlongeur ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
+    return PAS_FIN_DE_TOUR;
 }
 
 int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
-    return 1; // Met fin au tour
+    return FIN_DE_TOUR;
 }
 
 EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature){
@@ -281,7 +364,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
     // -- Vérifie les effets de statut avant d'agir --
 
     // Empoisonnement
-    if (creature->est_empoisonne == 1) {
+    if (creature->est_empoisonne == EST_EMPOISONNE) {
         creature->points_de_vie_actuels -= creature->points_de_vie_max * 0.05; // Perte de 5% des PV max
         if (creature->points_de_vie_actuels <= 0) {
             return; // La créature meurt, elle ne peut pas agir
@@ -289,63 +372,83 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
     }
 
     // Étourdissement
-    if (creature->est_etourdi == 1){
-        creature->est_etourdi = 0; // L'effet d'étourdissement dure un tour
+    if (creature->est_etourdi == EST_ETOURDI){
+        creature->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
         return; // La créature perd son tour
     }
 
     // -- La créature joue son tour --
 
-    int action_aleatoire = rand() % 3;
+    ChoixAttaqueCreature action_aleatoire = (int) (rand() % NB_CHOIX_CREATURE);
 
     switch (action_aleatoire)
     {
-    case 0:
-        creatureJugeDeFou();
+    case EXAMINE_ATTENTIVEMENT_CREATURE:
+        creatureExamineAttentivement();
         break;
-
-    case 1:
+    
+    case ATTAQUE_BASIQUE_CREATURE:
         creatureAttaque(joueur, creature);
         break;
-        
-    case 2:
-        // creatureFuit(joueur, creature);
-        break;  
+
+    case ATTAQUE_SPECIALE_CREATURE:
+        creatureAttaqueSpeciale(joueur, creature);
+        break;
+    
+    case DEFENSE_CREATURE:
+        creatureDefense(creature);
+        break;
+
+    case FUITE_CREATURE:
+        creatureFuit(joueur, creature);
+        *fuite_reussie = FUITE_REUSSIE;
+        break;
 
     // Juste au cas où
     default:
-        creatureJugeDeFou();
+        creatureExamineAttentivement();
         break;
     }
+
+    enleverPointsActionTourCreature(creature);
 }
 
-void creatureJugeDeFou(){
-    int texte_aleatoire = rand() % 3;
+void creatureExamineAttentivement(){
+    int texte_aleatoire = (int) (rand() % 3);
     switch (texte_aleatoire)
     {
     case 0:
-        printf("La créature vous observe avec curiosité.");
+        printf("La creature vous observe avec curiosite.\n");
         break;
     
     case 1:
-        printf("La créature émet un son étrange.");
+        printf("La creature emet un son etrange.\n");
         break;
 
     case 2:
-        printf("La créature nage en cercles autour de vous.");
+        printf("La creature nage en cercles autour de vous.\n");
         break;
 
     default:
+        printf("CA BUUUUUUUUUUUUUUUUUUUUUUUUUUUUG\n");
         break;
     }
     
 }
 
 void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
-    printf("La créature attaque !\n");
+    printf("La creature attaque !\n");
+}
+
+void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature){
+    printf("La creature utilise une attaque speciale !\n");
+}
+
+void creatureDefense(CreatureMarine* creature){
+    printf("La creature se met en position defensive !\n");
 }
 
 void creatureFuit(Plongeur* joueur, CreatureMarine* creature){
-    printf("La créature a fui !\n");
+    printf("La creature a fui !\n");
 }
 

@@ -12,6 +12,7 @@
 
 Plongeur initJoueur() {
     Plongeur joueur;
+
     joueur.points_de_vie_actuels = 100;
     joueur.points_de_vie_max = 100;
     joueur.niveau_oxygene = 100;
@@ -19,6 +20,17 @@ Plongeur initJoueur() {
     joueur.vitesse = 10;
     joueur.niveau_fatigue = 0;
     joueur.perles = 0;
+
+    joueur.attaque_minimale = 2;
+    joueur.attaque_maximale = 5;
+
+    joueur.defense = 5;
+    joueur.defense_supplementaire = 0;
+
+    joueur.a_fui = 0;
+    joueur.est_empoisonne = 0;
+    joueur.est_etourdi = 0;
+
     joueur.x = 0;
     joueur.y = 0;
     joueur.inventaire = initInventaire();
