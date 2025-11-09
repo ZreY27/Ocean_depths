@@ -11,7 +11,7 @@
 
 // ----------------------- Développement des fonctions ----------------------- //
 
-void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
+EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
 
     EtatFuite fuite_reussie_joueur = FUITE_ECHOUEEE;
     EtatFuite fuite_reussie_creature = FUITE_ECHOUEEE;
@@ -63,12 +63,22 @@ void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
     //verifier fin de combat
     if (joueur->points_de_vie_actuels <= 0) {
         printf("Vous avez ete vaincu...\n");
+        return DEFAITE;
     } else if (creature->points_de_vie_actuels <= 0) {
         printf("Vous avez vaincu la creature !\n");
+        return VICTOIRE;
     } else if (fuite_reussie_joueur == FUITE_REUSSIE) {
         printf("Vous avez reussi a fuir le combat !\n");
+        return FUITE;
     }
-    
+    else if(fuite_reussie_creature == FUITE_REUSSIE){
+        printf("La creature vous a file entre les doigts, skill issue btw.");
+        return FUITE;
+    }
+    else{
+        printf("Par la magie du saint esprit (bug), le combat s'est terminé. Skill issue de la part des dev btw.");
+        return FUITE;
+    }
 }
 
 // Version finale
