@@ -1,11 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include "../include/affichage.h"
 #include "../include/creatures.h"
 #include "../include/joueur.h"
 #include "../include/carte.h"
 
+
 void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
+    nettoyerAffichage();
     printf("OceanDepths - Profondeur:       ");
     printf("Perles : %d\n", joueur->perles);
 
@@ -27,7 +30,70 @@ void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
         } else printf(".");
     }
     printf("]\n\n");
+} 
+
+/* -------------------------------------------- PRETTY SCREEN ------------------------------------------------
+
+// Fonction utilitaire pour dessiner une barre de PV
+static void afficherBarrePV(int pv_actuels, int pv_max, int longueur) {
+    int nb_blocs = (pv_actuels * longueur) / pv_max;
+    printf("[");
+    for (int i = 0; i < longueur; i++) {
+        if (i < nb_blocs)
+            printf("█");
+        else
+            printf("░");
+    }
+    printf("] %3d/%3d", pv_actuels, pv_max);
 }
+
+// Fonction principale d'affichage du combat
+void afficherCombat(const Plongeur* joueur, const CreatureMarine* creature, 
+                    const char* message, const char* menu) {
+
+    // Ligne de séparation supérieure
+    printf("══════════════════════════════════════════════════════════════════\n");
+
+    // Nom + PV de la créature
+    printf("%-25s  HP: ", creature->nom);
+    afficherBarrePV(creature->points_de_vie_actuels, creature->points_de_vie_max, 20);
+    printf("\n");
+
+    // VS centré
+    printf("\n%30s\n\n", "VS");
+
+    // PV du joueur
+    printf("%-25s  HP: ", "Plongeur");
+    afficherBarrePV(joueur->points_de_vie_actuels, joueur->points_de_vie_max, 20);
+    printf("\n");
+
+    // Boîte de message
+    printf("╔════════════════════════════════════════════════════════════════╗\n");
+
+    // Gestion multi-lignes : on découpe le message sur les '\n'
+    const char* debut = message;
+    const char* fin;
+    while ((fin = strchr(debut, '\n')) != NULL) {
+        printf("║ %-62.*s ║\n", (int)(fin - debut), debut);
+        debut = fin + 1;
+    }
+    printf("║ %-62s ║\n", debut);
+
+    printf("╚════════════════════════════════════════════════════════════════╝\n");
+
+    // Boîte d'options (menu)
+    printf("╔════════════════════════════════════════════════════════════════╗\n");
+
+    debut = menu;
+    while ((fin = strchr(debut, '\n')) != NULL) {
+        printf("║ %-62.*s ║\n", (int)(fin - debut), debut);
+        debut = fin + 1;
+    }
+    printf("║ %-62s ║\n", debut);
+
+    printf("╚════════════════════════════════════════════════════════════════╝\n");
+}
+--------------------------------------------------------------------------------------------------------------- */ 
 
 void afficherCarte(Carte carte) {
     for (int i = 0; i < carte.hauteur; i++) {

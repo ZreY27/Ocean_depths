@@ -158,9 +158,10 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     // Vérifie les effets de statut avant d'agir
 
     // Empoisonnement
-    if(joueur->est_empoisonne == EST_EMPOISONNE) {
+    if(joueur->est_empoisonne > N_EST_PAS_EMPOISONNE) {
         joueur->points_de_vie_actuels -= joueur->points_de_vie_max * 0.05; // Perte de 5% des PV max
         printf("Le plongeur souffre du poison.\n");
+        joueur->est_empoisonne--;
         if (joueur->points_de_vie_actuels <= 0) {
             return; // Le joueur meurt, il ne peut pas agir
         }
