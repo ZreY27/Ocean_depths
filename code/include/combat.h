@@ -65,13 +65,13 @@ int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue)
 Les actions qui mettent fin au tour du joueur retournent 1, les autres 0.
 Cette implémentation permet de laisser le joueur revenir sur sa décision d'attaque ou non.
 */
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Version améliorable
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie); // Version améliorable
 
 FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature); // En cours...
 
 /*
 Actions pour la créature.
 */
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Faite
+void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie); // Faite
 
 #endif

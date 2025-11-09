@@ -1,5 +1,6 @@
 #ifndef CARTE_H
 #define CARTE_H
+
 #include "creatures.h"
 #include "inventaire.h"
 

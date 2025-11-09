@@ -1,3 +1,5 @@
+#ifndef ENUM_ETAT_H
+#define ENUM_ETAT_H
 typedef enum{
     PAS_FIN_DE_TOUR,
     FIN_DE_TOUR
@@ -18,3 +20,5 @@ typedef enum{
     FUITE_ECHOUEEE,
     FUITE_REUSSIE
 } EtatFuite;
+
+#endif

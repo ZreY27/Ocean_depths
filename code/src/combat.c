@@ -4,7 +4,6 @@
 #include "joueur.h"
 #include "creatures.h"
 #include "combat.h"
-#include "creatures.h"
 #include "inventaire.h"
 #include "affichage.h"
 #include "enum_etat.h"
@@ -14,8 +13,8 @@
 
 void lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
 
-    int fuite_reussie_joueur = FUITE_ECHOUEEE;
-    int fuite_reussie_creature = FUITE_ECHOUEEE;
+    EtatFuite fuite_reussie_joueur = FUITE_ECHOUEEE;
+    EtatFuite fuite_reussie_creature = FUITE_ECHOUEEE;
     reinitialiserPointsAction(joueur, creature);
     
     // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
@@ -118,11 +117,11 @@ ValidationAttaque verifierFatigue(int niveau_fatigue, ImpactFatigue impact_fatig
 }
 
 // Version finale
-int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue) {
+int calculerChanceFuite(int vitesseAllie, int vitesseEnnemi, int niveauFatigue) {
     int chanceFuite = 100;
 
    // --- Influence de la différence de vitesse ---
-    int difference = (int)(((double)(vitesseEnnemi - vitesseJoueur) / vitesseJoueur) * 100.0);
+    int difference = (int)(((double)(vitesseEnnemi - vitesseAllie) / vitesseAllie) * 100.0);
 
     if (difference > 0) {
         // Ennemi plus rapide → malus
@@ -144,7 +143,7 @@ int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue)
 // ----------------------------------- JOUEUR ----------------------------------- //
 
 // Version améliorable
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_etat) {
 
     // Vérifie les effets de statut avant d'agir
 
@@ -196,7 +195,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
                 break;
             
             case 4:
-                *fuite_etat = fuir(joueur, creature);
+                *fuite_etat = fuir(calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue));
                 choix_qui_met_fin_tour = FIN_DE_TOUR; // Fuir met fin au tour
                 break;
 
@@ -266,7 +265,7 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature){
 // ----------------------------------- CRÉATURE ---------------------------------- //
 
 // Version améliorable
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie) {
+void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie) {
     
     // -- Vérifie les effets de statut avant d'agir --
 
@@ -324,7 +323,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
         break;
 
     case FUITE_CREATURE:
-        *fuite_reussie = creatureFuit(joueur, creature);
+        *fuite_reussie = creatureFuit(calculerChanceFuite(creature->vitesse, joueur->vitesse, creature->niveau_fatigue));
         break;
 
     // Juste au cas où

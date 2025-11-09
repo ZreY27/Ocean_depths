@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "../include/creatures.h"
+#include "../include/joueur.h"
 #define MULTIPLICATEUR_ATTAQUE_SPECIALE_CREATURE 1.5
 
 CreatureMarine initCreature() {
@@ -128,8 +129,8 @@ void creatureDefense(CreatureMarine* creature){
 
 }
 
-EtatFuite creatureFuit(Plongeur* joueur, CreatureMarine* creature){
-    int chanceFuite = calculerChanceFuite(creature->vitesse, joueur->vitesse, creature->niveau_fatigue);
+EtatFuite creatureFuit(int chanceFuite){
+    
     int tirage = rand() % 100;
     printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
 
