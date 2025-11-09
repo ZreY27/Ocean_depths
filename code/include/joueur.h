@@ -1,8 +1,9 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
+
 #include "inventaire.h"
-#include "creatures.h"
 #include "carte.h"
+typedef struct CreatureMarine CreatureMarine;
 
 typedef enum {
     FATIGUE_AUCUNE,
@@ -13,7 +14,7 @@ typedef enum {
 
 
 
-typedef struct {
+typedef struct Plongeur{
     int points_de_vie_actuels;
     int points_de_vie_max;
     int niveau_oxygene;
@@ -50,7 +51,7 @@ void repos(Plongeur* joueur); // Faite
 
 FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature); //TODO
 int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
-EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature); // Faite
+EtatFuite fuir(int chanceFuite); // Faite
 void ouvrirBestiaire(); // <<< BONUS POSSIBLE
 
 int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE

@@ -6,8 +6,7 @@
 #include "../include/affichage.h"
 #include "../include/inventaire.h"
 #include "../include/creatures.h"
-#include "carte.h"
-#include "enum_etat.h"
+#include "../include/enum_etat.h"
 
 #define MULTIPLICATEUR_ATTAQUE_LOURDE 3.5
 
@@ -195,9 +194,8 @@ int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
     return FIN_DE_TOUR;
 }
 
-EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature){
-
-    int chanceFuite = calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue);
+EtatFuite fuir(int chanceFuite){
+    
     int tirage = rand() % 100;
     printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
 
