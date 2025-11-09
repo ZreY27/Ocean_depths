@@ -2,8 +2,6 @@
 #define COMBAT_H
 
 #define SEUIL_ACTION 100 
-#define MULTIPLICATEUR_ATTAQUE_LOURDE 3.5
-#define MULTIPLICATEUR_ATTAQUE_SPECIALE_CREATURE 1.5
 
 typedef enum {
     AUCUNE_ACTION,
@@ -11,11 +9,6 @@ typedef enum {
     ACTION_CREATURE,
     ACTION_DOUBLE
 } EtatAction;
-
-typedef enum{
-    FUITE_ECHOUEEE,
-    FUITE_REUSSIE
-} EtatFuite;
 
 typedef enum {
     RETOUR_CHOIX_JOUEUR,
@@ -45,22 +38,6 @@ typedef enum {
 } ValidationAttaque;
 
 typedef enum{
-    PAS_FIN_DE_TOUR,
-    FIN_DE_TOUR
-} FinDeTourPlongeur;
-
-typedef enum{
-    N_EST_PAS_EMPOISONNE,
-    EST_EMPOISONNE = 3
-} EtatPoison;
-
-typedef enum{
-    N_EST_PAS_ETOURDI,
-    EST_ETOURDI, 
-    EST_LOURDEMENT_ETOURDI
-} EtatEtourdi;
-
-typedef enum{
     IMPACT_FATIGUE_AUCUN,
     IMPACT_FATIGUE_FAIBLE,
     IMPACT_FATIGUE_ELEVEE
@@ -85,38 +62,16 @@ ValidationAttaque verifierFatigue(int niveau_fatigue, ImpactFatigue impact_fatig
 int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue); // Faite
 
 /* 
-Fonctions à déplacer dans joueur.c ou inventaire.c + creature.c plus tard
 Les actions qui mettent fin au tour du joueur retournent 1, les autres 0.
 Cette implémentation permet de laisser le joueur revenir sur sa décision d'attaque ou non.
-À terme, il y aura plusieurs choix d'attaques (comme des compétences spéciales, etc.)
 */
 void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Version améliorable
 
-FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature); // En cours...
-void attaqueLegere(Plongeur* joueur, CreatureMarine* creature); // Faite
-void attaqueLourde(Plongeur* joueur, CreatureMarine* creature); // Faite
-void defense(Plongeur* joueur); // Faite
-void repos(Plongeur* joueur); // Faite
-
-FinDeTourPlongeur ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature); //TODO
-int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
-EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature); // Faite
-void ouvrirBestiaire(); // <<< BONUS POSSIBLE
-
-int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE
+FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature); // En cours...
 
 /*
-Algorithme et système d'IA à peaufiner plus tard. 
-Pour l'instant effectue une action aléatoire simple.
+Actions pour la créature.
 */
 void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Faite
-
-void creatureExamineAttentivement(); // Faite
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
-void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature); // Faite
-void creatureDefense(CreatureMarine* creature); // Faite
-EtatFuite creatureFuit(Plongeur* joueur, CreatureMarine* creature); // Faite
-
-int esquiveCreature(CreatureMarine* creature); // <<< BONUS POSSIBLE
 
 #endif

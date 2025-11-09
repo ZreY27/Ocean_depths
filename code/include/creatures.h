@@ -1,6 +1,9 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
+#include "enum_etat.h"
+#include "joueur.h"
+
 typedef struct {
     int id;  // identifiant unique pour cibler
     char nom[30];
@@ -33,5 +36,15 @@ typedef enum{
 } EffetSpecialCreature;
 
 CreatureMarine initCreature();
+
+// -- COMBAT --
+
+void creatureExamineAttentivement(); // Faite
+void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
+void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature); // Faite
+void creatureDefense(CreatureMarine* creature); // Faite
+EtatFuite creatureFuit(Plongeur* joueur, CreatureMarine* creature); // Faite
+
+int esquiveCreature(CreatureMarine* creature); // <<< BONUS POSSIBLE
 
 #endif

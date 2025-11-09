@@ -5,10 +5,11 @@
 #include "../include/carte.h"
 #include "../include/affichage.h"
 #include "../include/inventaire.h"
-
+#include "../include/creatures.h"
 #include "carte.h"
+#include "enum_etat.h"
 
-
+#define MULTIPLICATEUR_ATTAQUE_LOURDE 3.5
 
 Plongeur initJoueur() {
     Plongeur joueur;
@@ -107,4 +108,112 @@ void deplacement(Plongeur* joueur, Carte carte) {
     carte.cases[joueur->y][joueur->x].visible = 1;  // nouvelle position
 
     afficherCarte(carte);
+}
+
+// ---------------------------------- COMBAT -------------------------------------------------------
+
+void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
+
+    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur
+    int degat = (rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
+                + joueur->attaque_minimale;
+
+    // prise en compte de la défense de la créature
+    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
+
+    // prise en compte des armes équipées
+    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
+
+    // s'assure que les dégâts ne sont pas négatifs
+    if (degat < 0) {
+        degat = 0;
+    }
+   
+    // applique les dégâts à la créature
+    creature->points_de_vie_actuels -= degat;
+    
+    // affiche les dégâts infligés
+    printf("Vous infligez %d points de degats a la creature.\n", degat);
+
+    // affecte la fatique du plongeur
+    if(joueur->niveau_fatigue < 3){
+        joueur->niveau_fatigue += 1;
+    }
+
+}
+
+void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
+
+    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur multipliées par 3.5
+    int degat = (int)((rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
+             + joueur->attaque_minimale);
+
+    // prise en compte de la défense de la créature
+    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
+
+    // prise en compte des armes équipées
+    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
+
+    // s'assure que les dégâts ne sont pas négatifs
+    if (degat < 0) {
+        degat = 0;
+    }
+
+    // multiplie les dégâts par le multiplicateur
+    degat = (int)(degat * MULTIPLICATEUR_ATTAQUE_LOURDE);
+   
+    // applique les dégâts à la créature
+    creature->points_de_vie_actuels -= degat;
+    
+    // affiche les dégâts infligés
+    printf("Vous infligez %d points de degats a la creature.\n", degat);
+}
+
+void defense(Plongeur* joueur){
+    //augmente de 50% la défense du plongeur jusqu'au prochain tour
+    //redonne un peu d'energie : un point de fatigue (baisse la fatigue)
+    joueur->defense_supplementaire = joueur->defense / 2;
+    if(joueur->niveau_fatigue > 0){
+        joueur->niveau_fatigue -= 1;
+    }
+}
+
+void repos(Plongeur* joueur){
+    //redonne deux points de fatigue (baisse la fatigue)
+    if(joueur->niveau_fatigue > 1){
+        joueur->niveau_fatigue -= 2;
+    } else {
+        joueur->niveau_fatigue = 0;
+    }
+}
+
+FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
+    return PAS_FIN_DE_TOUR;
+}
+
+int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
+    return FIN_DE_TOUR;
+}
+
+EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature){
+
+    int chanceFuite = calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue);
+    int tirage = rand() % 100;
+    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
+
+    if (tirage < chanceFuite) {
+
+        printf("Fuite reussie !\n");
+        return FUITE_REUSSIE;
+
+    } else {
+
+        printf("Fuite echouee !\n");
+        return FUITE_ECHOUEEE;
+
+    }
+}
+
+void ouvrirBestiaire(){
+
 }
