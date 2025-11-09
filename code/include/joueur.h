@@ -1,7 +1,7 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
 #include "inventaire.h"
-
+#include "creatures.h"
 #include "carte.h"
 
 typedef enum {
@@ -10,6 +10,8 @@ typedef enum {
     FATIGUE_MODEREE,
     FATIGUE_ELEVEE
 } NiveauFatigue;
+
+
 
 typedef struct {
     int points_de_vie_actuels;
@@ -39,5 +41,18 @@ typedef struct {
 
 Plongeur initJoueur();
 void deplacement(Plongeur* joueur, Carte carte);
+
+// -- Combat --
+void attaqueLegere(Plongeur* joueur, CreatureMarine* creature); // Faite
+void attaqueLourde(Plongeur* joueur, CreatureMarine* creature); // Faite
+void defense(Plongeur* joueur); // Faite
+void repos(Plongeur* joueur); // Faite
+
+FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature); //TODO
+int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
+EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature); // Faite
+void ouvrirBestiaire(); // <<< BONUS POSSIBLE
+
+int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE
 
 #endif

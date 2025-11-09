@@ -7,7 +7,7 @@
 #include "creatures.h"
 #include "inventaire.h"
 #include "affichage.h"
-
+#include "enum_etat.h"
 
 
 // ----------------------- Développement des fonctions ----------------------- //
@@ -173,7 +173,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
 
         // Exemple d'actions
         printf("Choisissez une action :\n");
-        printf("1. Attaquer\n");
+        printf("1. Action de combat\n");
         printf("2. Utiliser un objet\n");
         printf("3. Ouvrir le bestiaire\n");
         printf("4. Fuir\n");
@@ -211,7 +211,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_etat) {
 
 }
 
-FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature){
+FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature){
     
     int attaque_valide = ATTAQUE_INVALIDE;
     
@@ -261,112 +261,6 @@ FinDeTourPlongeur choixAttaque(Plongeur* joueur, CreatureMarine* creature){
 
     // Sécurité : attaque toujours valide ici
     return FIN_DE_TOUR;
-}
-
-void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
-
-    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur
-    int degat = (rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
-                + joueur->attaque_minimale;
-
-    // prise en compte de la défense de la créature
-    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
-
-    // prise en compte des armes équipées
-    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
-
-    // s'assure que les dégâts ne sont pas négatifs
-    if (degat < 0) {
-        degat = 0;
-    }
-   
-    // applique les dégâts à la créature
-    creature->points_de_vie_actuels -= degat;
-    
-    // affiche les dégâts infligés
-    printf("Vous infligez %d points de degats a la creature.\n", degat);
-
-    // affecte la fatique du plongeur
-    if(joueur->niveau_fatigue < 3){
-        joueur->niveau_fatigue += 1;
-    }
-
-}
-
-void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
-
-    // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur multipliées par 3.5
-        int degat = (int)((rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
-                    + joueur->attaque_minimale);
-
-    // prise en compte de la défense de la créature
-    degat -= (creature->defense + creature->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
-
-    // prise en compte des armes équipées
-    degat += 5 * joueur->inventaire.arme; // Chaque niveau d'arme ajoute 5 dégâts
-
-    // s'assure que les dégâts ne sont pas négatifs
-    if (degat < 0) {
-        degat = 0;
-    }
-
-    // multiplie les dégâts par le multiplicateur
-    degat = (int)(degat * MULTIPLICATEUR_ATTAQUE_LOURDE);
-   
-    // applique les dégâts à la créature
-    creature->points_de_vie_actuels -= degat;
-    
-    // affiche les dégâts infligés
-    printf("Vous infligez %d points de degats a la creature.\n", degat);
-}
-
-void defense(Plongeur* joueur){
-    //augmente de 50% la défense du plongeur jusqu'au prochain tour
-    //redonne un peu d'energie : un point de fatigue (baisse la fatigue)
-    joueur->defense_supplementaire = joueur->defense / 2;
-    if(joueur->niveau_fatigue > 0){
-        joueur->niveau_fatigue -= 1;
-    }
-}
-
-void repos(Plongeur* joueur){
-    //redonne deux points de fatigue (baisse la fatigue)
-    if(joueur->niveau_fatigue > 1){
-        joueur->niveau_fatigue -= 2;
-    } else {
-        joueur->niveau_fatigue = 0;
-    }
-}
-
-FinDeTourPlongeur ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
-    return PAS_FIN_DE_TOUR;
-}
-
-int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
-    return FIN_DE_TOUR;
-}
-
-EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature){
-
-    int chanceFuite = calculerChanceFuite(joueur->vitesse, creature->vitesse, joueur->niveau_fatigue);
-    int tirage = rand() % 100;
-    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
-
-    if (tirage < chanceFuite) {
-
-        printf("Fuite reussie !\n");
-        return FUITE_REUSSIE;
-
-    } else {
-
-        printf("Fuite echouee !\n");
-        return FUITE_ECHOUEEE;
-
-    }
-}
-
-void ouvrirBestiaire(){
-
 }
 
 // ----------------------------------- CRÉATURE ---------------------------------- //
@@ -442,115 +336,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie
     enleverPointsActionTourCreature(creature);
 }
 
-void creatureExamineAttentivement(){
-    int texte_aleatoire = (int) (rand() % 3);
-    switch (texte_aleatoire)
-    {
-    case 0:
-        printf("La creature vous observe avec curiosite.\n");
-        break;
-    
-    case 1:
-        printf("La creature emet un son etrange.\n");
-        break;
-
-    case 2:
-        printf("La creature nage en cercles autour de vous.\n");
-        break;
-
-    default:
-        printf("CA BUUUUUUUUUUUUUUUUUUUUUUUUUUUUG\n");
-        break;
-    }
-    
-}
-
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
 
 
-    // calcul des dégâts brutes en fonction des statistiques d'attaque de la créature
-    int degat = (rand() % (creature->attaque_maximale - creature->attaque_minimale + 1)) 
-                + creature->attaque_minimale;
-    
-    // prise en compte de la défense du plongeur
-    degat -= (joueur->defense + joueur->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
-    
-    // s'assure que les dégâts ne sont pas négatifs
-    if (degat < 0) {
-        degat = 0;
-    }   
 
-    // applique les dégâts au plongeur
-    joueur->points_de_vie_actuels -= degat;
-
-    // affiche les dégâts infligés
-    printf("La creature vous inflige %d points de degats.\n", degat);
-}
-
-void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature){
-    
-    // calcul des dégâts brutes en fonction des statistiques d'attaque de la créature multipliées par 1.5
-    int degat = (int)((rand() % (creature->attaque_maximale - creature->attaque_minimale + 1)) 
-                + creature->attaque_minimale) * MULTIPLICATEUR_ATTAQUE_SPECIALE_CREATURE;
-
-    // prise en compte de la défense du plongeur
-    degat -= (joueur->defense + joueur->defense_supplementaire) / 10; // La défense réduit les dégâts de 10%
-
-    // s'assure que les dégâts ne sont pas négatifs
-    if (degat < 0) {
-        degat = 0;
-    }
-
-    // applique les dégâts au plongeur
-    joueur->points_de_vie_actuels -= degat;
-
-    // affiche les dégâts infligés
-    printf("La creature vous inflige %d points de degats avec son attaque speciale.\n", degat);
-
-    // applique l'effet spécial si la créature en a un avec une probabilité de propre à la créature
-    switch (creature->effet_special) {
-        case EFFET_POISON:
-            if ((rand() % 100) < 30) { // 30% de chance d'empoisonner
-                joueur->est_empoisonne = EST_EMPOISONNE;
-                printf("La creature vous a empoisonne !\n");
-            }
-            break;
-        
-        case EFFET_PARALYSIE:
-            if ((rand() % 100) < 20) { // 20% de chance d'étourdir
-                joueur->est_etourdi = EST_ETOURDI;
-                printf("La creature vous a etourdi !\n");
-            }
-            break;
-
-        case AUCUN_EFFET_SPECIAL:
-        default:
-            break;
-    }
-    
-}
-
-void creatureDefense(CreatureMarine* creature){
-    //augmente de 50% la défense de la créature jusqu'au prochain tour
-    creature->defense_supplementaire = creature->defense / 2;
-
-}
-
-EtatFuite creatureFuit(Plongeur* joueur, CreatureMarine* creature){
-    int chanceFuite = calculerChanceFuite(creature->vitesse, joueur->vitesse, creature->niveau_fatigue);
-    int tirage = rand() % 100;
-    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
-
-    if (tirage < chanceFuite) {
-
-        printf("La créature s'est enfuie !\n");
-        return FUITE_REUSSIE;
-
-    } else {
-
-        printf("La creature a tente de s'enfuir mais elle est tombee comme du n'importe quoi, on dirait la giraffe qui s'emmele les pattes quoi !\n");
-        return FUITE_ECHOUEEE;
-
-    }
-}
 
