@@ -3,6 +3,7 @@
 
 #define SEUIL_ACTION 100 
 #define MULTIPLICATEUR_ATTAQUE_LOURDE 3.5
+#define MULTIPLICATEUR_ATTAQUE_SPECIALE_CREATURE 1.5
 
 typedef enum {
     AUCUNE_ACTION,
@@ -41,7 +42,7 @@ typedef enum {
 typedef enum {
     ATTAQUE_INVALIDE,
     ATTAQUE_VALIDE
-} ValidationAttaquePlongeur;
+} ValidationAttaque;
 
 typedef enum{
     PAS_FIN_DE_TOUR,
@@ -50,13 +51,20 @@ typedef enum{
 
 typedef enum{
     N_EST_PAS_EMPOISONNE,
-    EST_EMPOISONNE
+    EST_EMPOISONNE = 3
 } EtatPoison;
 
 typedef enum{
     N_EST_PAS_ETOURDI,
-    EST_ETOURDI
+    EST_ETOURDI, 
+    EST_LOURDEMENT_ETOURDI
 } EtatEtourdi;
+
+typedef enum{
+    IMPACT_FATIGUE_AUCUN,
+    IMPACT_FATIGUE_FAIBLE,
+    IMPACT_FATIGUE_ELEVEE
+} ImpactFatigue;
 
 /*
 Seuil de points d'action pour pouvoir agir.
@@ -70,7 +78,10 @@ void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature); // F
 void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
 void enleverPointsActionTourJoueur(Plongeur* joueur); // Faite
 void enleverPointsActionTourCreature(CreatureMarine* creature); // Faite
+
 EtatAction verifierSeuilAction(Plongeur* joueur, CreatureMarine* creature); // Faite
+ValidationAttaque verifierFatigue(int niveau_fatigue, ImpactFatigue impact_fatigue); // Faite
+
 int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue); // Faite
 
 /* 
@@ -92,20 +103,20 @@ int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
 EtatFuite fuir(Plongeur* joueur, CreatureMarine* creature); // Faite
 void ouvrirBestiaire(); // <<< BONUS POSSIBLE
 
-int esquiveJoueur(Plongeur* joueur); // TODO
+int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE
 
 /*
 Algorithme et système d'IA à peaufiner plus tard. 
 Pour l'instant effectue une action aléatoire simple.
 */
-void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Version améliorable
+void creatureAgit(Plongeur* joueur, CreatureMarine* creature, int* fuite_reussie); // Faite
 
 void creatureExamineAttentivement(); // Faite
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); //TODO
-void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature); //TODO
-void creatureDefense(CreatureMarine* creature); //TODO
-void creatureFuit(Plongeur* joueur, CreatureMarine* creature); //TODO
+void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
+void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature); // Faite
+void creatureDefense(CreatureMarine* creature); // Faite
+EtatFuite creatureFuit(Plongeur* joueur, CreatureMarine* creature); // Faite
 
-int esquiveCreature(CreatureMarine* creature); // TODO
+int esquiveCreature(CreatureMarine* creature); // <<< BONUS POSSIBLE
 
 #endif

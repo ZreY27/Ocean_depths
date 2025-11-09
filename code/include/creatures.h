@@ -16,7 +16,7 @@ typedef struct {
 
     int niveau_fatigue; // 0 à 3
     int vitesse;
-    char effet_special[20]; // "paralysie", "poison", "aucun"
+    int effet_special; // "paralysie : 2", "poison : 1", "aucun : 0"
     int est_vivant;
 
     int points_action; // ATB en combat (Active Time Battle)
@@ -26,17 +26,11 @@ typedef struct {
 
 }CreatureMarine;
 
-/*
-typedef enum {
-    OBSERVE,
-    ATTAQUE_LEGERE,
-    ATTAQUE_LOURDE,
-    //CRIE_DE_GUERRE,
-    //CRIE_INTIMIDANT,
-    FUITE,
-    NB_ACTION_POSSIBLE
-} PlageActionCreature;
- */
+typedef enum{
+    AUCUN_EFFET_SPECIAL,
+    EFFET_POISON,
+    EFFET_PARALYSIE
+} EffetSpecialCreature;
 
 CreatureMarine initCreature();
 

@@ -18,7 +18,7 @@ CreatureMarine initCreature() {
 
     creature.niveau_fatigue = 0;
     creature.vitesse = 5;
-    //creature.effet_special = malloc(sizeof(char*));
+    creature.effet_special = AUCUN_EFFET_SPECIAL;
     creature.est_vivant = 1;
     
     creature.points_action = 0;
