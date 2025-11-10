@@ -89,6 +89,25 @@ void deplacement(Plongeur* joueur, Carte carte) {
             int gain = (rand() % 2 == 0) ? 10 : 50;
             joueur->perles += gain;
             printf("⚓ Vous explorez une épave et trouvez %d perles ! 💰\n", gain);
+
+
+            gain = (rand() % 4);
+            switch (gain) {
+                case 0 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 1 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 2 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 3 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                default :
+                    break;
+            }
             break;
         }
         default:
