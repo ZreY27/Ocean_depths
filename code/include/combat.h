@@ -43,13 +43,19 @@ typedef enum{
     IMPACT_FATIGUE_ELEVEE
 } ImpactFatigue;
 
+typedef enum{
+    VICTOIRE,
+    DEFAITE,
+    FUITE
+} EtatFinCombat;
+
 /*
 Seuil de points d'action pour pouvoir agir.
 Chaque tour, chaque personnage gagne des points d'action en fonction de sa vitesse.
 Une fois le seuil atteint, il peut agir (attaquer, utiliser un objet, etc.) 
 et perd des points d'action.
 */
-void lancerCombat(Plongeur* joueur, CreatureMarine* creature); // En cours...
+EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature); // En cours...
 
 void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
 void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
