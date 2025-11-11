@@ -32,5 +32,7 @@ typedef struct {
 
 Inventaire initInventaire();
 void ajoutIventaire(Inventaire* inventaire, int objet);
+void consomerObjet(Inventaire* inventaire, int index);
+void ajoutArme(Inventaire* inventaire, int arme);
 
 #endif
