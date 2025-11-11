@@ -73,7 +73,7 @@ Cette implémentation permet de laisser le joueur revenir sur sa décision d'att
 */
 void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie); // Version améliorable
 
-FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature); // En cours...
+FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message, char* menu); // En cours...
 
 /*
 Actions pour la créature.

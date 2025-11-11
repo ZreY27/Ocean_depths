@@ -32,30 +32,30 @@ CreatureMarine initCreature() {
 
 // -------------------------------------- COMBAT ------------------------------------ 
 
-void creatureExamineAttentivement(){
+char* creatureExamineAttentivement(char* message){
     int texte_aleatoire = (int) (rand() % 3);
     switch (texte_aleatoire)
     {
     case 0:
-        printf("La creature vous observe avec curiosite.\n");
-        break;
+        sprintf(message,"La creature vous observe avec curiosite.\n");
+        return message;
     
     case 1:
-        printf("La creature emet un son etrange.\n");
-        break;
+        sprintf(message,"La creature emet un son etrange.\n");
+        return message;
 
     case 2:
-        printf("La creature nage en cercles autour de vous.\n");
-        break;
+        sprintf(message,"La creature nage en cercles autour de vous.\n");
+        return message;
 
     default:
-        printf("CA BUUUUUUUUUUUUUUUUUUUUUUUUUUUUG\n");
-        break;
+        sprintf(message,"CA BUUUUUUUUUUUUUUUUUUUUUUUUUUUUG\n");
+        return message;
     }
     
 }
 
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
+int creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
 
 
     // calcul des dégâts brutes en fonction des statistiques d'attaque de la créature
@@ -73,11 +73,11 @@ void creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
     // applique les dégâts au plongeur
     joueur->points_de_vie_actuels -= degat;
 
-    // affiche les dégâts infligés
-    printf("La creature vous inflige %d points de degats.\n", degat);
+    return degat;
+//"La creature vous inflige %d points de degats.
 }
 
-void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature){
+void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* message, char* effet_special){
     
     // calcul des dégâts brutes en fonction des statistiques d'attaque de la créature multipliées par 1.5
     int degat = (int)((rand() % (creature->attaque_maximale - creature->attaque_minimale + 1)) 
@@ -98,26 +98,27 @@ void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature){
     joueur->points_de_vie_actuels -= degat;
 
     // affiche les dégâts infligés
-    printf("La creature vous inflige %d points de degats avec son attaque speciale.\n", degat);
+    sprintf(message,"La creature vous inflige %d points de degats avec son attaque speciale.", degat);
 
     // applique l'effet spécial si la créature en a un avec une probabilité de propre à la créature
     switch (creature->effet_special) {
         case EFFET_POISON:
             if ((rand() % 100) < 30) { // 30% de chance d'empoisonner
                 joueur->est_empoisonne = EST_EMPOISONNE;
-                printf("La creature vous a empoisonne !\n");
+                sprintf(effet_special,"La creature vous a empoisonne.", degat);
             }
             break;
         
         case EFFET_PARALYSIE:
             if ((rand() % 100) < 20) { // 20% de chance d'étourdir
                 joueur->est_etourdi = EST_ETOURDI;
-                printf("La creature vous a etourdi !\n");
+                sprintf(effet_special,"La creature vous a paralyse.", degat);
             }
             break;
 
         case AUCUN_EFFET_SPECIAL:
         default:
+            sprintf(effet_special,"", degat);
             break;
     }
     
@@ -130,20 +131,12 @@ void creatureDefense(CreatureMarine* creature){
 }
 
 EtatFuite creatureFuit(int chanceFuite){
-    
+
     int tirage = rand() % 100;
-    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
-
     if (tirage < chanceFuite) {
-
-        printf("La créature s'est enfuie !\n");
         return FUITE_REUSSIE;
-
     } else {
-
-        printf("La creature a tente de s'enfuir mais elle est tombee comme du n'importe quoi, on dirait la giraffe qui s'emmele les pattes quoi !\n");
         return FUITE_ECHOUEEE;
-
     }
 }
 

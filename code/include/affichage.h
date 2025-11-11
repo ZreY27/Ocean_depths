@@ -5,7 +5,8 @@
 #include "joueur.h"
 #include "carte.h"
 
-void afficheCombat(CreatureMarine * creature, Plongeur * joueur);
+void afficherCombat(const CreatureMarine * creature, const Plongeur * joueur, const char* message, const char* menu);
+void afficherBarrePV(int pv_actuels, int pv_max, int longueur);
 void afficherCarte(Carte carte);
 
 void afficheJoueurStat(Plongeur * joueur);

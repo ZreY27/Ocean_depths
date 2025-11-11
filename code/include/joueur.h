@@ -44,8 +44,8 @@ Plongeur initJoueur();
 void deplacement(Plongeur* joueur, Carte carte);
 
 // -- Combat --
-void attaqueLegere(Plongeur* joueur, CreatureMarine* creature); // Faite
-void attaqueLourde(Plongeur* joueur, CreatureMarine* creature); // Faite
+int attaqueLegere(Plongeur* joueur, CreatureMarine* creature); // Faite
+int attaqueLourde(Plongeur* joueur, CreatureMarine* creature); // Faite
 void defense(Plongeur* joueur); // Faite
 void repos(Plongeur* joueur); // Faite
 
