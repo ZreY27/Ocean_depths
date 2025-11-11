@@ -12,6 +12,7 @@ add_executable(OceanDepths
         code/src/carte.c
         code/src/sauvegarde.c
         code/src/inventaire.c
+        code/src/combat.c
 )
 
 # Dossiers d'en-têtes (.h)

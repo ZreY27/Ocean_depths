@@ -66,6 +66,10 @@ EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
         return DEFAITE;
     } else if (creature->points_de_vie_actuels <= 0) {
         printf("Vous avez vaincu la creature !\n");
+        int arme = rand() % 4;
+        if (arme < 3) {
+            ajoutArme(&joueur->inventaire, arme);
+        }
         return VICTOIRE;
     } else if (fuite_reussie_joueur == FUITE_REUSSIE) {
         printf("Vous avez reussi a fuir le combat !\n");

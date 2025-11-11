@@ -55,8 +55,9 @@ void afficheInventaire(Inventaire inventaire) {
 void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
     nettoyerAffichage();
     printf("OceanDepths - Profondeur:       ");
-    printf("Perles : %d\n", joueur->perles);
+    printf("Perles : %d\n\n", joueur->perles);
 
+    afficheInventaire(joueur->inventaire);
     //affiche la vie du joueur
     printf("Joueur :\n");
     printf("[");

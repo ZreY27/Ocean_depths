@@ -21,7 +21,7 @@ void ajoutIventaire(Inventaire* inventaire, int objet) {
         printf("L'inventaire est déjà plein !\n");
         printf("Entrez le numéro de l'objet à poser ou 0 pour ne rien faire :\n");
         scanf("%d", &index);
-        if (index > inventaire->capacite) {
+        if (index > inventaire->capacite || index < 0) {
             printf("Saisie incorrecte\n");
         }
         else if (index != 0) {
@@ -31,5 +31,35 @@ void ajoutIventaire(Inventaire* inventaire, int objet) {
     else {
         inventaire->objets[inventaire->nb_objets] = new_objet;
         inventaire->nb_objets++;
+    }
+}
+
+void consomerObjet(Inventaire* inventaire, int index) {
+    inventaire->objets[index] = inventaire->objets[inventaire->nb_objets-1];
+    inventaire->objets[inventaire->nb_objets-1] = (Objet){0};
+}
+
+void ajoutArme(Inventaire* inventaire, int arme) {
+    if (arme>=inventaire->arme) {
+        inventaire->arme = arme;
+        printf("Vous avez gagné une nouvelle arme !");
+        switch (inventaire->arme) {
+            case POING :
+                printf("✊");
+                break;
+            case COUTEAU :
+                printf("🔪");
+                break;
+            case HARPON :
+                printf("🎯");
+                break;
+            case LASER :
+                printf("🔫");
+                break;
+            default :
+                printf("⬛ ");
+                break;
+        }
+        printf("\n");
     }
 }
