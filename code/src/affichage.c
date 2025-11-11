@@ -5,6 +5,51 @@
 #include "../include/creatures.h"
 #include "../include/joueur.h"
 #include "../include/carte.h"
+#include "../include/inventaire.h"
+
+
+
+void afficheInventaire(Inventaire inventaire) {
+    printf("===== INVENTAIRE ======\n");
+    for (int i = 0; i < inventaire.capacite; i++) {
+        switch (inventaire.objets[i].type) {
+            case SOIN :
+                printf("💊 ");
+                break;
+            case FLASH :
+                printf("⚡ ");
+                break;
+            case TORPILLE_DE_POCHE :
+                printf("💣 ");
+                break;
+            case DIFFUSEUR_TOXIQUE :
+                printf("☠️ ");
+                break;
+            default :
+                printf("⬛ ");
+                break;
+        }
+    }
+    printf("     ");
+    switch (inventaire.arme) {
+        case POING :
+            printf("✊");
+            break;
+        case COUTEAU :
+            printf("🔪");
+            break;
+        case HARPON :
+            printf("🎯");
+            break;
+        case LASER :
+            printf("🔫");
+            break;
+        default :
+            printf("⬛ ");
+            break;
+    }
+    printf("\n\n");
+}
 
 
 void afficheCombat(CreatureMarine * creature, Plongeur * joueur) {
@@ -137,6 +182,8 @@ void afficheJoueurStat(Plongeur *joueur) {
     printf("💎 Perles  : %d\n", joueur->perles);
 
     printf("=============================\n\n");
+
+    afficheInventaire(joueur->inventaire);
 }
 
 void nettoyerAffichage() {
@@ -146,3 +193,6 @@ void nettoyerAffichage() {
     system("clear");
 #endif
 }
+
+
+

@@ -31,5 +31,6 @@ typedef struct {
 } Inventaire;
 
 Inventaire initInventaire();
+void ajoutIventaire(Inventaire* inventaire, int objet);
 
 #endif

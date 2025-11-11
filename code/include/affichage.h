@@ -4,7 +4,7 @@
 #include "creatures.h"
 #include "joueur.h"
 #include "carte.h"
-
+void afficheInventaire(Inventaire inventaire);
 void afficheCombat(CreatureMarine * creature, Plongeur * joueur);
 void afficherCarte(Carte carte);
 
