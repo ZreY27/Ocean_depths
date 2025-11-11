@@ -5,7 +5,14 @@
 #include "joueur.h"
 #include "carte.h"
 
-void afficherCombat(const CreatureMarine * creature, const Plongeur * joueur, const char* message, const char* menu);
+typedef enum{
+    AFFICHAGE_LENT,
+    AFFICHAGE_NORMAL,
+    AFFICHAGE_RAPIDE
+} EtatAffichage;
+
+void afficherCombat(const CreatureMarine * creature, const Plongeur * joueur, 
+    const char* message, const char* menu, EtatAffichage etat_affichage);
 void afficherBarrePV(int pv_actuels, int pv_max, int longueur);
 void afficheInventaire(Inventaire inventaire);
 void afficherCarte(Carte carte);

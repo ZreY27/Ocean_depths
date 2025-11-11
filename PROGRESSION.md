@@ -3,12 +3,12 @@
 . Structure de données suggérée  
 . Génération  
 
-Étape 2 : Système d'Attaque du Plongeur🔄  
+Étape 2 : Système d'Attaque du Plongeur✅  
 . Ressources du joueur  
 . Interface de combat (exemple)  
 . Mécaniques de combat  
 
-Étape 3 : Attaque des Créatures Marines🔄  
+Étape 3 : Attaque des Créatures Marines✅  
 . Ordre d'attaque  
 . Effets spéciaux des créatures  
 . Conséquences des attaques subies  

@@ -98,7 +98,7 @@ void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* m
     joueur->points_de_vie_actuels -= degat;
 
     // affiche les dégâts infligés
-    sprintf(message,"La creature vous inflige %d points de degats avec son attaque speciale.", degat);
+    sprintf(message,"La creature vous inflige %d points de degats\n avec son attaque speciale.", degat);
 
     // applique l'effet spécial si la créature en a un avec une probabilité de propre à la créature
     switch (creature->effet_special) {

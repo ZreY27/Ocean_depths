@@ -20,7 +20,12 @@ EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
     // Boucler le combat jusqu'à la mort du joueur ou de la créature ou qu'une fuite a été réussie (peu importe qui)
     while(joueur->points_de_vie_actuels > 0 && creature->points_de_vie_actuels > 0 && fuite_reussie_joueur == FUITE_ECHOUEEE && fuite_reussie_creature == FUITE_ECHOUEEE) {
         
-        //afficheCombat(creature, joueur); avec la valeur de points d'action mise à jour
+        char message[1];
+        char menu[1];
+        sprintf(message, " ");
+        sprintf(menu, " ");
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_RAPIDE);
+
         augmenterPointsAction(joueur, creature);
         //printf("Actions : Joueur=%d, Creature=%d\n", joueur->points_action, creature->points_action);
 
@@ -170,7 +175,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     char menu[256];
     sprintf(message, "C'est a votre tour.");
     sprintf(menu, "Chargement...");
-    afficherCombat(creature, joueur, message, menu);
+    afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
 
     // Vérifie les effets de statut avant d'agir
 
@@ -178,7 +183,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     if(joueur->est_empoisonne > N_EST_PAS_EMPOISONNE) {
         joueur->points_de_vie_actuels -= joueur->points_de_vie_max * 0.05; // Perte de 5% des PV max
         sprintf(message, "Vous subissez les effets du poison.");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         joueur->est_empoisonne--;
         if (joueur->points_de_vie_actuels <= 0) {
             return; // Le joueur meurt, il ne peut pas agir
@@ -189,7 +194,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     if (joueur->est_etourdi == EST_ETOURDI){
         joueur->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
         sprintf(message, "Vous etes étourdi et ne pouvez pas agir.");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         return; // Le joueur perd son tour
     }
     
@@ -200,10 +205,9 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     
     while(!choix_qui_met_fin_tour) {
 
-        // Exemple d'actions
         sprintf(message, "Choisissez une action :");
         sprintf(menu, "1. Action de combat\n2. Utiliser un objet\n3. Ouvrir le bestiaire\n4. Fuir");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_RAPIDE);
 
         int choix;
         scanf(" %d", &choix);
@@ -232,7 +236,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
             default:
                 sprintf(message, "Choix invalide. Veuillez reessayer.");
                 sprintf(menu, "1. Action de combat\n2. Utiliser un objet\n3. Ouvrir le bestiaire\n4. Fuir");
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
                 break;
 
         }
@@ -250,7 +254,7 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message
 
         sprintf(message, "Choisissez une action de combat :");
         sprintf(menu, "1. Attaque legere\n2. Attaque lourde\n3. Defense\n4. Repos\n0. Retour");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_RAPIDE);
 
         ChoixAttaquePlongeur attaque;
        
@@ -266,28 +270,28 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message
             case ATTAQUE_LEGERE:
                 degats = attaqueLegere(joueur, creature);
                 sprintf(message, "Vous infligez %d points de degats a la creature.", degats);
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
                 attaque_valide = ATTAQUE_VALIDE;
                 break;
 
             case ATTAQUE_LOURDE:
                 degats = attaqueLourde(joueur, creature);
                 sprintf(message, "Vous infligez %d points de degats a la creature.", degats);
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
                 attaque_valide = ATTAQUE_VALIDE;
                 break;
             
             case DEFENSE:
                 defense(joueur);
                 sprintf(message, "Vous prenez une position defensive.");
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
                 attaque_valide = ATTAQUE_VALIDE;
                 break;
 
             case REPOS:
                 repos(joueur);
                 sprintf(message, "Vous prenez un moment pour vous reposer.");
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
                 attaque_valide = ATTAQUE_VALIDE;
                 break;
                 
@@ -296,7 +300,7 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message
             
             default:
                 sprintf(message, "Choix invalide.");
-                afficherCombat(creature, joueur, message, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
                 break;
         }
     }
@@ -312,9 +316,9 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
     
     char message[256];
     char menu[256];
-    sprintf(message, "C'est au tour de la creature");
+    sprintf(message, "C'est au tour de la creature.");
     sprintf(menu, "En attente...");
-    afficherCombat(creature, joueur, message, menu);
+    afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
 
     // -- Vérifie les effets de statut avant d'agir --
 
@@ -323,7 +327,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
         creature->points_de_vie_actuels -= creature->points_de_vie_max * 0.05; // Perte de 5% des PV max
         creature->est_empoisonne--;
         sprintf(message, "La creature souffre du poison.");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         if (creature->points_de_vie_actuels <= 0) {
             return; // La créature meurt, elle ne peut pas agir
         }
@@ -333,7 +337,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
     if (creature->est_etourdi > N_EST_PAS_ETOURDI){
         creature->est_etourdi--;
         sprintf(message, "La creature est etourdie et ne peut pas agir ce tour-ci.");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         return; // La créature perd son tour
     }
 
@@ -359,55 +363,51 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
     {
     case EXAMINE_ATTENTIVEMENT_CREATURE:
         creatureExamineAttentivement(message);
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         break;
     
     case ATTAQUE_BASIQUE_CREATURE:{
         int degats = creatureAttaque(joueur, creature);
-        afficherCombat(creature, joueur, message, menu);
+        sprintf(message, "La créature vous inflige %d points de degats.", degats);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         break;
     }
     case ATTAQUE_SPECIALE_CREATURE:{
         char effet_special[256];
         creatureAttaqueSpeciale(joueur, creature, message, effet_special);
-        afficherCombat(creature, joueur, message, menu);
-        afficherCombat(creature, joueur, effet_special, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
+        afficherCombat(creature, joueur, effet_special, menu, AFFICHAGE_LENT);
         break;
     }
     case DEFENSE_CREATURE:
         sprintf(message,"La creature prend une position defensive.");
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         creatureDefense(creature);
         break;
 
     case FUITE_CREATURE:{
         int chanceFuite = calculerChanceFuite(creature->vitesse, joueur->vitesse, creature->niveau_fatigue);
         sprintf(message,"La creature tente de fuir le combat. (%d%% de chance)", chanceFuite);
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         *fuite_reussie = creatureFuit(chanceFuite);
         if (*fuite_reussie)
         {
             sprintf(message, "La creature a reussi a fuir le combat !");
-            afficherCombat(creature, joueur, message, menu);
+            afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         }
         else
         {
             sprintf(message, "La creature a echoue a fuir le combat.");
-            afficherCombat(creature, joueur, message, menu);
+            afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         }
         break;
     }   
     // Juste au cas où
     default:
         creatureExamineAttentivement(message);
-        afficherCombat(creature, joueur, message, menu);
+        afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         break;
     }
 
     enleverPointsActionTourCreature(creature);
 }
-
-
-
-
-
