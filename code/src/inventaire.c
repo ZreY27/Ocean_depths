@@ -1,6 +1,7 @@
 #include "../include/inventaire.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 Inventaire initInventaire() {
     Inventaire inventaire;
@@ -9,4 +10,56 @@ Inventaire initInventaire() {
     inventaire.objets = malloc(sizeof(Objet)*inventaire.capacite);
     inventaire.arme = POING;
     return inventaire;
+}
+
+void ajoutIventaire(Inventaire* inventaire, int objet) {
+    Objet new_objet;
+    new_objet.type = objet;
+    printf("vous avez trouvé un objet !\n");
+    if (inventaire->nb_objets == inventaire->capacite) {
+        int index;
+        printf("L'inventaire est déjà plein !\n");
+        printf("Entrez le numéro de l'objet à poser ou 0 pour ne rien faire :\n");
+        scanf("%d", &index);
+        if (index > inventaire->capacite || index < 0) {
+            printf("Saisie incorrecte\n");
+        }
+        else if (index != 0) {
+            inventaire->objets[index-1] = new_objet;
+        }
+    }
+    else {
+        inventaire->objets[inventaire->nb_objets] = new_objet;
+        inventaire->nb_objets++;
+    }
+}
+
+void consomerObjet(Inventaire* inventaire, int index) {
+    inventaire->objets[index] = inventaire->objets[inventaire->nb_objets-1];
+    inventaire->objets[inventaire->nb_objets-1] = (Objet){0};
+}
+
+void ajoutArme(Inventaire* inventaire, int arme) {
+    if (arme>=inventaire->arme) {
+        inventaire->arme = arme;
+        printf("Vous avez gagné une nouvelle arme !");
+        switch (inventaire->arme) {
+            case POING :
+                printf("✊");
+                break;
+            case COUTEAU :
+                printf("🔪");
+                break;
+            case HARPON :
+                printf("🎯");
+                break;
+            case LASER :
+                printf("🔫");
+                break;
+            default :
+                printf("⬛ ");
+                break;
+        }
+        printf("\n");
+    }
 }

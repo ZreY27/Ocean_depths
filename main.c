@@ -11,10 +11,10 @@ int main(void) {
     Plongeur joueur = initJoueur();
     CreatureMarine kraken = initCreature();
     //afficheCombat(&kraken, &joueur);
-    Carte carte = initCarte(10, 5);
+    Carte carte = initCarte(10, 10);
     afficherCarte(carte);
     sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
-    for (int i = 0;i<10;i++) {
+    for (int i = 0;i<20;i++) {
         afficheJoueurStat(&joueur);
         deplacement(&joueur, carte);
     }

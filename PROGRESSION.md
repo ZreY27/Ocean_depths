@@ -8,14 +8,15 @@
 . Interface de combat (exemple)  
 . Mécaniques de combat  
 
-Étape 3 : Attaque des Créatures Marines❌  
+Étape 3 : Attaque des Créatures Marines🔄  
 . Ordre d'attaque  
 . Effets spéciaux des créatures  
 . Conséquences des attaques subies  
 . Ordre des actions par tour  
 
-Étape 4 : Système de Récompenses Marines❌  
+Étape 4 : Système de Récompenses Marines✅  
 . Interface de récompense (exemple)  
+![img_4.png](img_4.png)
 . Types de récompenses  
 . Gestion d'inventaire (exemple)  
 
@@ -28,10 +29,14 @@
 . Liste des compétences
 . Mécaniques  
 
-Étape 7 : Cartographie des Océans❌  
+Étape 7 : Cartographie des Océans✅  
 . Interface de carte  
+![img.png](img.png)
 . Types de zones  
-. Mécaniques d'exploration  
+![img_1.png](img_1.png)
+. Mécaniques d'exploration
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
 
 Bonus Possibles❌  
 . Système de Progression  

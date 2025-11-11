@@ -7,6 +7,7 @@
 #include "../include/inventaire.h"
 #include "../include/creatures.h"
 #include "../include/enum_etat.h"
+#include "../include/combat.h"
 
 #define MULTIPLICATEUR_ATTAQUE_LOURDE 3.5
 
@@ -87,11 +88,36 @@ void deplacement(Plongeur* joueur, Carte carte) {
             }
             break;
         }
+        case PROFONDEUR : {
+            if (rand() % 2 == 0) {
+                CreatureMarine mob = initCreature();
+                lancerCombat(joueur, &mob);
+            }
+        }
         case EPAVE: {
             // Soit 10 soit 50 perles (1 chance sur 2)
             int gain = (rand() % 2 == 0) ? 10 : 50;
             joueur->perles += gain;
             printf("⚓ Vous explorez une épave et trouvez %d perles ! 💰\n", gain);
+
+
+            gain = (rand() % 4);
+            switch (gain) {
+                case 0 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 1 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 2 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                case 3 :
+                    ajoutIventaire(&joueur->inventaire, gain);
+                    break;
+                default :
+                    break;
+            }
             break;
         }
         default:
@@ -190,6 +216,32 @@ void repos(Plongeur* joueur){
 }
 
 FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
+    int index;
+    printf("Entrez le numéro de l'objet à utiliser ou 0 pour ne rien faire :\n\n");
+    scanf("%d", &index);
+    if (index > joueur->inventaire.nb_objets || index < 0) {
+        printf("Saisie incorrecte\n");
+    } else if (index != 0){
+        switch (joueur->inventaire.objets[index - 1].type) {
+            case SOIN:
+                joueur->points_de_vie_actuels = (joueur->points_de_vie_actuels + joueur->points_de_vie_max/2);
+                if (joueur->points_de_vie_actuels > joueur->points_de_vie_max) {
+                    joueur->points_de_vie_actuels = joueur->points_de_vie_max;
+                }
+                break;
+            case FLASH:
+                creature->est_etourdi = 2;
+                break;
+            case TORPILLE_DE_POCHE:
+                creature->points_de_vie_actuels -= 50;
+                break;
+            case DIFFUSEUR_TOXIQUE:
+                creature->est_empoisonne = 4;
+                break;
+        }
+        printf("test");
+        consomerObjet(&joueur->inventaire, index);
+    }
     return PAS_FIN_DE_TOUR;
 }
 
