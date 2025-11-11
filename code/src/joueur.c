@@ -16,8 +16,10 @@ Plongeur initJoueur() {
 
     joueur.points_de_vie_actuels = 100;
     joueur.points_de_vie_max = 100;
+
     joueur.niveau_oxygene = 100;
     joueur.niveau_oxygene_max = 100;
+    
     joueur.vitesse = 10;
     joueur.niveau_fatigue = 0;
     joueur.perles = 0;
@@ -28,6 +30,7 @@ Plongeur initJoueur() {
     joueur.defense = 5;
     joueur.defense_supplementaire = 0;
 
+    joueur.points_action = 0;
     joueur.a_fui = 0;
     joueur.est_empoisonne = 0;
     joueur.est_etourdi = 0;
@@ -137,7 +140,7 @@ void deplacement(Plongeur* joueur, Carte carte) {
 
 // ---------------------------------- COMBAT -------------------------------------------------------
 
-void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
+int attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
 
     // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur
     int degat = (rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
@@ -156,18 +159,16 @@ void attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
    
     // applique les dégâts à la créature
     creature->points_de_vie_actuels -= degat;
-    
-    // affiche les dégâts infligés
-    printf("Vous infligez %d points de degats a la creature.\n", degat);
 
     // affecte la fatique du plongeur
     if(joueur->niveau_fatigue < 3){
         joueur->niveau_fatigue += 1;
     }
 
+    return degat;
 }
 
-void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
+int attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
 
     // calcul des dégâts brutes en fonction des statistiques d'attaque du plongeur multipliées par 3.5
     int degat = (int)((rand() % (joueur->attaque_maximale - joueur->attaque_minimale + 1)) 
@@ -192,6 +193,8 @@ void attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
     
     // affiche les dégâts infligés
     printf("Vous infligez %d points de degats a la creature.\n", degat);
+
+    return degat;
 }
 
 void defense(Plongeur* joueur){

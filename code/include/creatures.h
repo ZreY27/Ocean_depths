@@ -39,9 +39,9 @@ CreatureMarine initCreature();
 
 // -- COMBAT --
 
-void creatureExamineAttentivement(); // Faite
-void creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
-void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature); // Faite
+char* creatureExamineAttentivement(char* message); // Faite
+int creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
+void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* message, char* effet_special); // Faite
 void creatureDefense(CreatureMarine* creature); // Faite
 EtatFuite creatureFuit(int chanceFuite); // Faite
 
