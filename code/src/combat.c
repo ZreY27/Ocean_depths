@@ -97,7 +97,7 @@ EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
                 arme == 2 ? "LASER 🔫" : "INCONNU");
             afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         }
-        sprintf(message, "Retour à la carte...", perles_gagnees);
+        sprintf(message, "Retour a la carte...", perles_gagnees);
         sprintf(menu, " ");
         afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
         return VICTOIRE;
@@ -109,7 +109,7 @@ EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature) {
         return FUITE;
     }
     else{ // n'est pas sensé arriver
-        printf("Par la magie du saint esprit (bug), le combat s'est terminé. Skill issue de la part des dev btw.");
+        printf("Par la magie du saint esprit (bug), le combat s'est termine. Skill issue de la part des dev btw.");
         return FUITE;
     }
 }
@@ -215,7 +215,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     // Étourdissement
     if (joueur->est_etourdi == EST_ETOURDI){
         joueur->est_etourdi = N_EST_PAS_ETOURDI; // L'effet d'étourdissement dure un tour
-        sprintf(message, "Vous etes étourdi et ne pouvez pas agir.");
+        sprintf(message, "Vous etes etourdi et ne pouvez pas agir.");
         afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
         enleverPointsActionTourJoueur(joueur);
         return; // Le joueur perd son tour
@@ -417,7 +417,7 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
             attaque_valide = verifierFatigue(creature->niveau_fatigue, IMPACT_FATIGUE_FAIBLE);
             if(attaque_valide){
                 int degats = creatureAttaque(joueur, creature);
-                sprintf(message, "La créature vous inflige %d points de degats.", degats);
+                sprintf(message, "La creature vous inflige %d points de degats.", degats);
                 afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
             }
             break;
