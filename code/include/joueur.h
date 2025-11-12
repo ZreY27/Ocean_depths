@@ -55,6 +55,6 @@ int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
 EtatFuite fuir(int chanceFuite); // Faite
 void ouvrirBestiaire(); // <<< BONUS POSSIBLE
 
-int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE
+int esquiveJoueur(Plongeur* joueur); // Faite
 
 #endif

@@ -55,7 +55,7 @@ Chaque tour, chaque personnage gagne des points d'action en fonction de sa vites
 Une fois le seuil atteint, il peut agir (attaquer, utiliser un objet, etc.) 
 et perd des points d'action.
 */
-EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature); // En cours...
+EtatFinCombat lancerCombat(Plongeur* joueur, CreatureMarine* creature); // // Faite
 
 void reinitialiserPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
 void augmenterPointsAction(Plongeur* joueur, CreatureMarine* creature); // Faite
@@ -71,9 +71,9 @@ int calculerChanceFuite(int vitesseJoueur, int vitesseEnnemi, int niveauFatigue)
 Les actions qui mettent fin au tour du joueur retournent 1, les autres 0.
 Cette implémentation permet de laisser le joueur revenir sur sa décision d'attaque ou non.
 */
-void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie); // Version améliorable
+void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_reussie); // // Faite
 
-FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message, char* menu); // En cours...
+FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message, char* menu); // // Faite
 
 /*
 Actions pour la créature.

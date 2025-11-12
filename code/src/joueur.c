@@ -263,3 +263,24 @@ EtatFuite fuir(int chanceFuite){
 void ouvrirBestiaire(){
 
 }
+
+int esquiveJoueur(Plongeur* joueur){
+
+    // Chance de base 1%, +1% par 5 points de vitesse
+    int chance = 1 + (joueur->vitesse / 5);
+
+    // Fatigue réduit l’esquive
+    chance -= joueur->niveau_fatigue;
+
+    // Étourdi = chance divisée par 2
+    if (joueur->est_etourdi)
+        chance /= 2;
+
+    // Clamp entre 1% et 25%
+    if (chance < 1) chance = 1;
+    if (chance > 25) chance = 25;
+
+    // Tirage aléatoire
+    int tirage = rand() % 100; // 0 à 99
+    return (tirage < chance) ? ESQUIVE : N_ESQUIVE_PAS;
+}

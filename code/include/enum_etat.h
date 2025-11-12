@@ -21,4 +21,9 @@ typedef enum{
     FUITE_REUSSIE
 } EtatFuite;
 
+typedef enum {
+    N_ESQUIVE_PAS = 0,
+    ESQUIVE = 1
+} EtatEsquive;
+
 #endif

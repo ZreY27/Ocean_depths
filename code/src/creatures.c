@@ -174,5 +174,22 @@ EtatFuite creatureFuit(int chanceFuite){
     }
 }
 
+int esquiveCreature(CreatureMarine* creature){
+    // Chance de base 1%, +1% par 5 points de vitesse d’écart
+    int chance = 1 + (int)(creature->vitesse / 5);
 
+    // Fatigue réduit l’esquive
+    chance -= creature->niveau_fatigue;
 
+    // Étourdie = moitié moins de chances
+    if (creature->est_etourdi)
+        chance /= 2;
+
+    // Clamp entre 1% et 20% (les monstres esquivent un peu moins)
+    if (chance < 1) chance = 1;
+    if (chance > 20) chance = 20;
+
+    // Tirage aléatoire
+    int tirage = rand() % 100;
+    return (tirage < chance) ? ESQUIVE : N_ESQUIVE_PAS;
+}
