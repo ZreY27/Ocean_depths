@@ -35,8 +35,11 @@ void ajoutIventaire(Inventaire* inventaire, int objet) {
 }
 
 void consomerObjet(Inventaire* inventaire, int index) {
-    inventaire->objets[index] = inventaire->objets[inventaire->nb_objets-1];
-    inventaire->objets[inventaire->nb_objets-1] = (Objet){0};
+    for (int i = index-1; i < inventaire->nb_objets-1; i++) {
+        inventaire->objets[i] = inventaire->objets[i + 1];
+    }
+    inventaire->objets[inventaire->nb_objets - 1] = (Objet){0};
+    inventaire->nb_objets -= 1;
 }
 
 void ajoutArme(Inventaire* inventaire, int arme) {

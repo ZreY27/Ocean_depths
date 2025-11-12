@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 # Déclare l'exécutable + toutes les sources .c
 add_executable(OceanDepths
-    __test.c
+    main.c
     code/src/affichage.c
     code/src/carte.c
     code/src/combat.c
