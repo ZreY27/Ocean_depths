@@ -9,7 +9,8 @@ typedef enum {
     FATIGUE_AUCUNE,
     FATIGUE_LEGERE,
     FATIGUE_MODEREE,
-    FATIGUE_ELEVEE
+    FATIGUE_ELEVEE,
+    FATIGUE_CRITIQUE
 } NiveauFatigue;
 
 
@@ -19,7 +20,7 @@ typedef struct Plongeur{
     int points_de_vie_max;
     int niveau_oxygene;
     int niveau_oxygene_max;
-    int niveau_fatigue; // 0 à 3
+    int niveau_fatigue; // 0 à 4
     int perles; // monnaie du jeu
  
     int vitesse; // influence l'ordre d'action en combat

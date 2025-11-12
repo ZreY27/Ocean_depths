@@ -11,15 +11,15 @@ CreatureMarine initCreature() {
     creature.points_de_vie_max = 100;
     creature.points_de_vie_actuels = 100;
 
-    creature.attaque_maximale = 7;
-    creature.attaque_minimale = 1;
+    creature.attaque_maximale = 7*4;
+    creature.attaque_minimale = 1*7;
 
     creature.defense = 10;
     creature.defense_supplementaire = 0;
 
     creature.niveau_fatigue = 0;
     creature.vitesse = 5;
-    creature.effet_special = AUCUN_EFFET_SPECIAL;
+    creature.effet_special = EFFET_POISON_PARALYSIE;
     creature.est_vivant = 1;
     
     creature.points_action = 0;
@@ -32,7 +32,14 @@ CreatureMarine initCreature() {
 
 // -------------------------------------- COMBAT ------------------------------------ 
 
-char* creatureExamineAttentivement(char* message){
+char* creatureExamineAttentivement(CreatureMarine* creature ,char* message){
+
+    if(creature->niveau_fatigue > 1){
+        creature->niveau_fatigue -= 2;
+    } else {
+        creature->niveau_fatigue = 0;
+    }
+
     int texte_aleatoire = (int) (rand() % 3);
     switch (texte_aleatoire)
     {
@@ -73,8 +80,12 @@ int creatureAttaque(Plongeur* joueur, CreatureMarine* creature){
     // applique les dégâts au plongeur
     joueur->points_de_vie_actuels -= degat;
 
+    // affecte la fatique de la créature
+    creature->niveau_fatigue += 1;
+
     return degat;
-//"La creature vous inflige %d points de degats.
+
+    
 }
 
 void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* message, char* effet_special){
@@ -105,29 +116,52 @@ void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* m
         case EFFET_POISON:
             if ((rand() % 100) < 30) { // 30% de chance d'empoisonner
                 joueur->est_empoisonne = EST_EMPOISONNE;
-                sprintf(effet_special,"La creature vous a empoisonne.", degat);
+                sprintf(effet_special,"La creature vous a empoisonne.");
             }
             break;
         
         case EFFET_PARALYSIE:
             if ((rand() % 100) < 20) { // 20% de chance d'étourdir
                 joueur->est_etourdi = EST_ETOURDI;
-                sprintf(effet_special,"La creature vous a paralyse.", degat);
+                sprintf(effet_special,"La creature vous a paralyse.");
             }
             break;
 
+        case EFFET_POISON_PARALYSIE:{
+            int est_empoisonne = 0;
+            int est_etourdi = 0;
+            if ((rand() % 100) < 30) { // 30% de chance d'empoisonner
+                joueur->est_empoisonne = EST_EMPOISONNE;
+                est_empoisonne = 1;
+                sprintf(effet_special,"La creature vous a empoisonne.");
+            }
+            if ((rand() % 100) < 20) { // 20% de chance d'étourdir
+                joueur->est_etourdi = EST_ETOURDI;
+                est_etourdi = 1;
+                sprintf(effet_special,"La creature vous a paralyse.");
+            }
+            if (est_empoisonne && est_etourdi) {
+                sprintf(effet_special,"La creature vous a empoisonne et paralyse.");
+            }
+            break;
+        }
         case AUCUN_EFFET_SPECIAL:
         default:
             sprintf(effet_special,"", degat);
             break;
     }
+
+    // affecte la fatique de la créature
+    creature->niveau_fatigue += 2;
     
 }
 
 void creatureDefense(CreatureMarine* creature){
     //augmente de 50% la défense de la créature jusqu'au prochain tour
     creature->defense_supplementaire = creature->defense / 2;
-
+    if(creature->niveau_fatigue > 0){
+        creature->niveau_fatigue -= 1;
+    }
 }
 
 EtatFuite creatureFuit(int chanceFuite){

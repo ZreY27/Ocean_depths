@@ -32,14 +32,15 @@ typedef struct CreatureMarine{
 typedef enum{
     AUCUN_EFFET_SPECIAL,
     EFFET_POISON,
-    EFFET_PARALYSIE
+    EFFET_PARALYSIE,
+    EFFET_POISON_PARALYSIE
 } EffetSpecialCreature;
 
 CreatureMarine initCreature();
 
 // -- COMBAT --
 
-char* creatureExamineAttentivement(char* message); // Faite
+char* creatureExamineAttentivement(CreatureMarine* creature, char* message); // Faite
 int creatureAttaque(Plongeur* joueur, CreatureMarine* creature); // Faite
 void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* message, char* effet_special); // Faite
 void creatureDefense(CreatureMarine* creature); // Faite

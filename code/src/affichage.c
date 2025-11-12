@@ -7,6 +7,21 @@
 #include "../include/carte.h"
 #include "../include/inventaire.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#define usleep(x) Sleep(x)
+#else
+#include <unistd.h>
+#endif
+
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define CYAN    "\033[36m"
+#define MAGENTA "\033[35m"
+#define BOLD    "\033[1m"
 
 
 void afficheInventaire(Inventaire inventaire) {
@@ -50,81 +65,6 @@ void afficheInventaire(Inventaire inventaire) {
     }
     printf("\n\n");
 }
-
-/* -------------------------------------------- PRETTY SCREEN ------------------------------------------------ 
-
-// Fonction utilitaire pour dessiner une barre de PV
-void afficherBarrePV(int pv_actuels, int pv_max, int longueur) {
-    int nb_blocs = (pv_actuels * longueur) / pv_max;
-    printf("[");
-    for (int i = 0; i < longueur; i++) {
-        if (i < nb_blocs)
-            printf("0");
-        else
-            printf("_");
-    }
-    printf("] %3d/%3d", pv_actuels, pv_max);
-}
-
-// Fonction principale d'affichage du combat
-void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
-                    const char* message, const char* menu) {
-    nettoyerAffichage();
-
-    // Ligne de séparation supérieure
-    printf("==================================================================\n");
-            
-    // Nom + PV de la créature
-    printf("%-25s  HP: ", creature->nom);
-    afficherBarrePV(creature->points_de_vie_actuels, creature->points_de_vie_max, 20);
-    printf("\n");
-
-    // VS centré
-    printf("\n%30s\n\n", "VS");
-
-    // PV du joueur
-    printf("%-25s  HP: ", "Plongeur");
-    afficherBarrePV(joueur->points_de_vie_actuels, joueur->points_de_vie_max, 20);
-    printf("\n");
-
-    // Boîte de message
-    printf("==================================================================\n");
-
-    // Gestion multi-lignes : on découpe le message sur les '\n'
-    const char* debut = message;
-    const char* fin;
-    while ((fin = strchr(debut, '\n')) != NULL) {
-        printf("| %-62.*s |\n", (int)(fin - debut), debut);
-        debut = fin + 1;
-    }
-    printf("| %-62s |\n", debut);
-
-    printf("==================================================================\n");
-
-    // Boîte d'options (menu)
-    printf("==================================================================\n");
-
-    debut = menu;
-    while ((fin = strchr(debut, '\n')) != NULL) {
-        printf("| %-62.*s |\n", (int)(fin - debut), debut);
-        debut = fin + 1;
-    }
-    printf("| %-62s |\n", debut);
-
-    printf("==================================================================\n");
-
-    _sleep(1000);
-}
--------------------------------------------------------------------------------------------------------------- */ 
-
-#define RESET   "\033[0m"
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
-#define CYAN    "\033[36m"
-#define MAGENTA "\033[35m"
-#define BOLD    "\033[1m"
 
 // ✅ barre de PV améliorée
 void afficherBarrePV(int pv_actuels, int pv_max, int longueur) {
@@ -186,8 +126,8 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     // === Bloc inférieur : Joueur ===
     printf(BOLD "%-25s" RESET "\nHP: ", "Plongeur");
     afficherBarrePV(joueur->points_de_vie_actuels, joueur->points_de_vie_max, 20);
-    printf("  |  Fatigue: %d  |  O₂: %d/%d\n", joueur->niveau_fatigue,
-           joueur->niveau_oxygene, joueur->niveau_oxygene_max);
+    printf("  |  Fatigue: %d  |  Vitesse: %d\n", joueur->niveau_fatigue,
+           joueur->vitesse);
 
     printf("   Points d'action : ");
     afficherBarrePA(joueur->points_action, 100, 20);
@@ -217,13 +157,13 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     printf("╚════════════════════════════════════════════════════════════════╝\n");
 
     if(etat_affichage == AFFICHAGE_LENT){
-        _sleep(1500);
+        usleep(1750);
     }
     else if (etat_affichage == AFFICHAGE_NORMAL){
-        _sleep(750);
+        usleep(1000);
     }
     else {
-        _sleep(100);
+        usleep(100);
     }
     
 }

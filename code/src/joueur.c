@@ -24,8 +24,8 @@ Plongeur initJoueur() {
     joueur.niveau_fatigue = 0;
     joueur.perles = 0;
 
-    joueur.attaque_minimale = 2;
-    joueur.attaque_maximale = 5;
+    joueur.attaque_minimale = 2*5;
+    joueur.attaque_maximale = 5*7;
 
     joueur.defense = 5;
     joueur.defense_supplementaire = 0;
@@ -161,9 +161,7 @@ int attaqueLegere(Plongeur* joueur, CreatureMarine* creature){
     creature->points_de_vie_actuels -= degat;
 
     // affecte la fatique du plongeur
-    if(joueur->niveau_fatigue < 3){
-        joueur->niveau_fatigue += 1;
-    }
+    joueur->niveau_fatigue += 1;
 
     return degat;
 }
@@ -191,8 +189,7 @@ int attaqueLourde(Plongeur* joueur, CreatureMarine* creature){
     // applique les dégâts à la créature
     creature->points_de_vie_actuels -= degat;
     
-    // affiche les dégâts infligés
-    printf("Vous infligez %d points de degats a la creature.\n", degat);
+    joueur->niveau_fatigue += 2;
 
     return degat;
 }
@@ -252,16 +249,12 @@ int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
 EtatFuite fuir(int chanceFuite){
     
     int tirage = rand() % 100;
-    printf("Chance de fuite : %d%%, Tirage : %d\n", chanceFuite, tirage);
 
     if (tirage < chanceFuite) {
-
-        printf("Fuite reussie !\n");
         return FUITE_REUSSIE;
 
     } else {
 
-        printf("Fuite echouee !\n");
         return FUITE_ECHOUEEE;
 
     }
