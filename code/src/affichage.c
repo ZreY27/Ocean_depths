@@ -66,6 +66,64 @@ void afficheInventaire(Inventaire inventaire) {
     printf("\n\n");
 }
 
+void afficherInventaireCombat(const Inventaire* inventaire) {
+    printf("\n╔════════════════════════════════════════════════════════════════╗\n");
+    printf("║                       🎒  INVENTAIRE  🎒                       ║\n");
+    printf("╚════════════════════════════════════════════════════════════════╝\n");
+
+    // Ligne des objets
+    printf("Objets : ");
+    for (int i = 0; i < inventaire->capacite; i++) {
+        if (i < inventaire->nb_objets) {
+            switch (inventaire->objets[i].type) {
+                case SOIN:
+                    printf("💊 ");
+                    break;
+                case FLASH:
+                    printf("⚡ ");
+                    break;
+                case TORPILLE_DE_POCHE:
+                    printf("💣 ");
+                    break;
+                case DIFFUSEUR_TOXIQUE:
+                    printf("☠️ ");
+                    break;
+                default:
+                    printf("⬛ ");
+                    break;
+            }
+        } else {
+            printf("⬛ ");
+        }
+    }
+
+    // Arme actuelle
+    printf("    Arme : ");
+    switch (inventaire->arme) {
+        case POING:
+            printf("✊");
+            break;
+        case COUTEAU:
+            printf("🔪");
+            break;
+        case HARPON:
+            printf("🎯");
+            break;
+        case LASER:
+            printf("🔫");
+            break;
+        default:
+            printf("⬛");
+            break;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════╗\n");
+    printf("║  %2d/%2d objets disponibles                                      ║\n",
+           inventaire->nb_objets, inventaire->capacite);
+    printf("╚════════════════════════════════════════════════════════════════╝\n\n");
+}
+
+
 // ✅ barre de PV améliorée
 void afficherBarrePV(int pv_actuels, int pv_max, int longueur) {
     int nb_blocs = (pv_actuels * longueur) / pv_max;
@@ -108,7 +166,7 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     printf("╔════════════════════════════════════════════════════════════════╗\n");
     printf("║                      🌊  OCEAN DEPTHS  🌊                      ║\n");
     printf("╚════════════════════════════════════════════════════════════════╝\n\n");
-
+    afficherInventaireCombat(&joueur->inventaire);
     // === Bloc supérieur : Créature ===
     printf(BOLD "%-25s" RESET "\nHP: ", creature->nom);
     afficherBarrePV(creature->points_de_vie_actuels, creature->points_de_vie_max, 20);
