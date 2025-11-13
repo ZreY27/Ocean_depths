@@ -4,7 +4,7 @@
 #include <string.h>
 
 #ifdef _WIN32
-    #define _WIN32_WINNT 0x0600 // Windows Vista+ pour les API modernes
+    //#define _WIN32_WINNT 0x0600 // Windows Vista+ pour les API modernes
     #include <windows.h>
     #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
         #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
@@ -34,7 +34,7 @@ void initConsole(void) {
     SMALL_RECT windowSize = {0, 0, 90, 30};
     SetConsoleWindowInfo(hOut, TRUE, &windowSize);
 
-    printf("\033[92m[INFO]\033[0m Console configurée pour UTF-8 ✅ (Windows)\n");
+    //printf("\033[92m[INFO]\033[0m Console configurée pour UTF-8 ✅ (Windows)\n");
 
 #else
     // --- LINUX / MAC ---
@@ -43,10 +43,11 @@ void initConsole(void) {
     const char* lang = getenv("LANG");
     printf("\033[92m[INFO]\033[0m Console UTF-8 détectée ✅ (%s)\n", lang);
 #endif
-
+    /*
     // --- 5️⃣ Test visuel ---
     printf("\n\033[36mTest visuel :\033[0m\n");
     printf("Couleurs : \033[31mROUGE\033[0m  \033[32mVERT\033[0m  \033[33mJAUNE\033[0m  \033[36mCYAN\033[0m\n");
     printf("Emoji    : 🤿 🐙 ⚔️ 💎 💧 🌊 ❤️ ☠️ 💫 😴\n");
     printf("Symboles : █ ░ ■ ● ▓ ▀ ▄\n\n");
+    */
 }

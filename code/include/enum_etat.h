@@ -7,7 +7,8 @@ typedef enum{
 
 typedef enum{
     N_EST_PAS_EMPOISONNE,
-    EST_EMPOISONNE = 3
+    EST_EMPOISONNE = 3,
+    LOURDEMENT_EMPOISONNE,
 } EtatPoison;
 
 typedef enum{

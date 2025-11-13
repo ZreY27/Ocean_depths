@@ -229,7 +229,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     while(!choix_qui_met_fin_tour) {
 
         sprintf(message, "Choisissez une action :");
-        sprintf(menu, "1. Action de combat\n2. Utiliser un objet\n3. Ouvrir le bestiaire\n4. Fuir");
+        sprintf(menu, "1. Action de combat\n2. Ouvrir l'inventaire\n3. Ouvrir le bestiaire\n4. Fuir");
         afficherCombat(creature, joueur, message, menu, AFFICHAGE_RAPIDE);
 
         int choix;
@@ -244,6 +244,9 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
                 break;
 
             case 2:
+                sprintf(message, "INVENTAIRE");
+                stringInventaire(&joueur->inventaire, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
                 choix_qui_met_fin_tour = ouvrirInventaire(joueur, creature);
                 break;
             
