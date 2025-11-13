@@ -75,7 +75,7 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     // === Bloc supérieur : Créature ===
     printf(BOLD "%-25s" RESET "\nHP: ", creature->nom);
     afficherBarrePV(creature->points_de_vie_actuels, creature->points_de_vie_max, 20);
-    printf("  |  Fatigue: %d  |  Vitesse: %d/4\n", creature->niveau_fatigue, 
+    printf("  |  Fatigue: %d/4  |  Vitesse: %d\n", creature->niveau_fatigue, 
             creature->vitesse);
 
     printf("   Points d'action : ");
@@ -90,7 +90,7 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     // === Bloc inférieur : Joueur ===
     printf(BOLD "%-25s" RESET "\nHP: ", "Plongeur");
     afficherBarrePV(joueur->points_de_vie_actuels, joueur->points_de_vie_max, 20);
-    printf("  |  Fatigue: %d  |  Vitesse: %d/4\n", joueur->niveau_fatigue,
+    printf("  |  Fatigue: %d/4  |  Vitesse: %d\n", joueur->niveau_fatigue,
             joueur->vitesse);
 
     printf("   Points d'action : ");
