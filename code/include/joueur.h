@@ -50,11 +50,11 @@ int attaqueLourde(Plongeur* joueur, CreatureMarine* creature); // Faite
 void defense(Plongeur* joueur); // Faite
 void repos(Plongeur* joueur); // Faite
 
-FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature); //TODO
-int utiliserObjet(Plongeur* joueur, CreatureMarine* creature); //TODO
+FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature); // Faite
 EtatFuite fuir(int chanceFuite); // Faite
+
 void ouvrirBestiaire(); // <<< BONUS POSSIBLE
 
-int esquiveJoueur(Plongeur* joueur); // <<< BONUS POSSIBLE
+int esquiveJoueur(Plongeur* joueur); // Faite
 
 #endif

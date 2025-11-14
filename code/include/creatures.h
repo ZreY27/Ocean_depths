@@ -46,6 +46,6 @@ void creatureAttaqueSpeciale(Plongeur* joueur, CreatureMarine* creature, char* m
 void creatureDefense(CreatureMarine* creature); // Faite
 EtatFuite creatureFuit(int chanceFuite); // Faite
 
-int esquiveCreature(CreatureMarine* creature); // <<< BONUS POSSIBLE
+int esquiveCreature(CreatureMarine* creature); // Faite
 
 #endif

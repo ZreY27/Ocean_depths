@@ -214,10 +214,9 @@ void repos(Plongeur* joueur){
 
 FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
     int index;
-    printf("Entrez le numéro de l'objet à utiliser ou 0 pour ne rien faire :\n\n");
     scanf("%d", &index);
     if (index > joueur->inventaire.nb_objets || index < 0) {
-        printf("Saisie incorrecte\n");
+        printf("Saisie incorrecte.\n");
     } else if (index != 0){
         switch (joueur->inventaire.objets[index - 1].type) {
             case SOIN:
@@ -227,23 +226,20 @@ FinDeTour ouvrirInventaire(Plongeur* joueur, CreatureMarine* creature){
                 }
                 break;
             case FLASH:
-                creature->est_etourdi = 2;
+                creature->est_etourdi = EST_LOURDEMENT_ETOURDI;
                 break;
             case TORPILLE_DE_POCHE:
                 creature->points_de_vie_actuels -= 50;
                 break;
             case DIFFUSEUR_TOXIQUE:
-                creature->est_empoisonne = 4;
+                creature->est_empoisonne = LOURDEMENT_EMPOISONNE;
                 break;
         }
         printf("test");
         consomerObjet(&joueur->inventaire, index);
+        return FIN_DE_TOUR;
     }
     return PAS_FIN_DE_TOUR;
-}
-
-int utiliserObjet(Plongeur* joueur, CreatureMarine* creature){
-    return FIN_DE_TOUR;
 }
 
 EtatFuite fuir(int chanceFuite){
@@ -262,4 +258,25 @@ EtatFuite fuir(int chanceFuite){
 
 void ouvrirBestiaire(){
 
+}
+
+int esquiveJoueur(Plongeur* joueur){
+
+    // Chance de base 1%, +1% par 5 points de vitesse
+    int chance = 1 + (joueur->vitesse / 5);
+
+    // Fatigue réduit l’esquive
+    chance -= joueur->niveau_fatigue;
+
+    // Étourdi = chance divisée par 2
+    if (joueur->est_etourdi)
+        chance /= 2;
+
+    // Clamp entre 1% et 25%
+    if (chance < 1) chance = 1;
+    if (chance > 25) chance = 25;
+
+    // Tirage aléatoire
+    int tirage = rand() % 100; // 0 à 99
+    return (tirage < chance) ? ESQUIVE : N_ESQUIVE_PAS;
 }

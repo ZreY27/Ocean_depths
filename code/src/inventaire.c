@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 Inventaire initInventaire() {
     Inventaire inventaire;
@@ -64,5 +65,43 @@ void ajoutArme(Inventaire* inventaire, int arme) {
                 break;
         }
         printf("\n");
+    }
+}
+
+void stringInventaire(Inventaire* inventaire, char* message) {
+    sprintf(message, " ");
+
+    char ligne[64]; // tampon pour chaque ajout
+
+    // 🔹 Parcours de chaque slot
+    for (int i = 0; i < inventaire->capacite; i++) {
+        if (i < inventaire->nb_objets) {
+            char emoji[8] = "⬛";
+
+            switch (inventaire->objets[i].type) {
+                case SOIN: strcpy(emoji, "💊"); break;
+                case FLASH: strcpy(emoji, "⚡"); break;
+                case TORPILLE_DE_POCHE: strcpy(emoji, "💣"); break;
+                case DIFFUSEUR_TOXIQUE: strcpy(emoji, "☠️"); break;
+                default: strcpy(emoji, "⬛"); break;
+            }
+
+            snprintf(ligne, sizeof(ligne), "%d.%s  ", i + 1, emoji);
+        } else {
+            snprintf(ligne, sizeof(ligne), "%d.⬛  ", i + 1);
+        }
+
+        strcat(message, ligne);
+    }
+    // 🔹 Ajout de l’option de retour
+    strcat(message, " 0. Retour\n");
+    // 🔹 Ajout de l’arme actuelle
+    strcat(message, "Arme : ");
+    switch (inventaire->arme) {
+        case POING: strcat(message, "✊"); break;
+        case COUTEAU: strcat(message, "🔪"); break;
+        case HARPON: strcat(message, "🎯"); break;
+        case LASER: strcat(message, "🔫"); break;
+        default: strcat(message, "⬛"); break;
     }
 }

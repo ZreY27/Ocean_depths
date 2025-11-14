@@ -48,3 +48,16 @@ légende :
 non commencé -> ❌  
 en cours -> 🔄  
 terminé -> ✅
+
+
+### Difficultés rencontrées : 
+
+# Combat : 
+
+    La première difficulté rencontrée s'est déroulé pendant l'implémentation du système de combat. Le plus dur a été de faire l'affichage. Il a fallu faire en sorte de passer en paramètres le message pour que l'affichage se fasse de manière automatique et cohérente. De ce fait, pour afficher le combat, seule une fonction est utilisée dans laquelle nous passons en paramètres, les messages à afficher.
+
+    La seconde était l'équilibrage du jeu. Afin d'éviter que le jeu soit trop simple et court ou trop long et monotone, il a fallu trouver des mécaniques pour améliorer le système de combatet de trouver des formules pas trop complexes pour calculer les dégâts infligés, etc.
+
+    Mention spéciale pour les dépendances circulaires : pendant le développement du système de combat, à deux reprises, des dépendances circulaires se sont créées. Pour les résoudre, nous avons dû retirer les #include responsables des dépendances circulaires pour ensuite tagger les structures importantes et puis faire des déclarations anticipées des structures pour pouvoir compiler le projet.
+
+    

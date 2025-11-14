@@ -7,7 +7,8 @@ typedef enum{
 
 typedef enum{
     N_EST_PAS_EMPOISONNE,
-    EST_EMPOISONNE = 3
+    EST_EMPOISONNE = 3,
+    LOURDEMENT_EMPOISONNE,
 } EtatPoison;
 
 typedef enum{
@@ -20,5 +21,10 @@ typedef enum{
     FUITE_ECHOUEEE,
     FUITE_REUSSIE
 } EtatFuite;
+
+typedef enum {
+    N_ESQUIVE_PAS = 0,
+    ESQUIVE = 1
+} EtatEsquive;
 
 #endif

@@ -229,7 +229,7 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
     while(!choix_qui_met_fin_tour) {
 
         sprintf(message, "Choisissez une action :");
-        sprintf(menu, "1. Action de combat\n2. Utiliser un objet\n3. Ouvrir le bestiaire\n4. Fuir");
+        sprintf(menu, "1. Action de combat\n2. Ouvrir l'inventaire\n3. Ouvrir le bestiaire\n4. Fuir");
         afficherCombat(creature, joueur, message, menu, AFFICHAGE_RAPIDE);
 
         int choix;
@@ -244,6 +244,9 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
                 break;
 
             case 2:
+                sprintf(message, "INVENTAIRE");
+                stringInventaire(&joueur->inventaire, menu);
+                afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
                 choix_qui_met_fin_tour = ouvrirInventaire(joueur, creature);
                 break;
             
@@ -301,6 +304,11 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message
             case ATTAQUE_LEGERE:
                 attaque_valide = verifierFatigue(joueur->niveau_fatigue, IMPACT_FATIGUE_FAIBLE);
                 if(attaque_valide){
+                    if ((esquiveCreature(creature) == ESQUIVE)){
+                        sprintf(message, "La creature a esquive votre attaque !");
+                        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
+                        break;
+                    }
                     degats = attaqueLegere(joueur, creature);
                     sprintf(message, "Vous infligez %d points de degats a la creature.", degats);
                     afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
@@ -313,6 +321,11 @@ FinDeTour choixAttaque(Plongeur* joueur, CreatureMarine* creature, char* message
             case ATTAQUE_LOURDE:
                 attaque_valide = verifierFatigue(joueur->niveau_fatigue, IMPACT_FATIGUE_ELEVEE);
                 if(attaque_valide){
+                    if ((esquiveCreature(creature) == ESQUIVE)){
+                        sprintf(message, "La creature a esquive votre attaque !");
+                        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
+                        break;
+                    }
                     degats = attaqueLourde(joueur, creature);
                     sprintf(message, "Vous infligez %d points de degats a la creature.", degats);
                     afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
@@ -416,6 +429,11 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
         case ATTAQUE_BASIQUE_CREATURE:{
             attaque_valide = verifierFatigue(creature->niveau_fatigue, IMPACT_FATIGUE_FAIBLE);
             if(attaque_valide){
+                if ((esquiveJoueur(joueur) == ESQUIVE)){
+                        sprintf(message, "Vous avez esquive l'attaque !");
+                        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
+                        break;
+                }
                 int degats = creatureAttaque(joueur, creature);
                 sprintf(message, "La creature vous inflige %d points de degats.", degats);
                 afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);
@@ -425,6 +443,11 @@ void creatureAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_r
         case ATTAQUE_SPECIALE_CREATURE:{
             attaque_valide = verifierFatigue(creature->niveau_fatigue, IMPACT_FATIGUE_ELEVEE);
             if(attaque_valide){
+                if ((esquiveJoueur(joueur) == ESQUIVE)){
+                        sprintf(message, "Vous avez esquive l'attaque !");
+                        afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
+                        break;
+                }
                 char effet_special[256];
                 creatureAttaqueSpeciale(joueur, creature, message, effet_special);
                 afficherCombat(creature, joueur, message, menu, AFFICHAGE_LENT);

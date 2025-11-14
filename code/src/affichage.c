@@ -23,106 +23,12 @@
 #define MAGENTA "\033[35m"
 #define BOLD    "\033[1m"
 
-
-void afficheInventaire(Inventaire inventaire) {
-    printf("===== INVENTAIRE ======\n");
-    for (int i = 0; i < inventaire.capacite; i++) {
-        switch (inventaire.objets[i].type) {
-            case SOIN :
-                printf("💊 ");
-                break;
-            case FLASH :
-                printf("⚡ ");
-                break;
-            case TORPILLE_DE_POCHE :
-                printf("💣 ");
-                break;
-            case DIFFUSEUR_TOXIQUE :
-                printf("☠️ ");
-                break;
-            default :
-                printf("⬛ ");
-                break;
-        }
-    }
-    printf("     ");
-    switch (inventaire.arme) {
-        case POING :
-            printf("✊");
-            break;
-        case COUTEAU :
-            printf("🔪");
-            break;
-        case HARPON :
-            printf("🎯");
-            break;
-        case LASER :
-            printf("🔫");
-            break;
-        default :
-            printf("⬛ ");
-            break;
-    }
-    printf("\n\n");
+void afficherInventaire(Inventaire* inventaire) {
+    printf("🎒  INVENTAIRE  🎒\n");
+    char message[512] = "";
+    stringInventaire(inventaire, message);
+    printf("%s\n", message);    
 }
-
-void afficherInventaireCombat(const Inventaire* inventaire) {
-    printf("\n╔════════════════════════════════════════════════════════════════╗\n");
-    printf("║                       🎒  INVENTAIRE  🎒                       ║\n");
-    printf("╚════════════════════════════════════════════════════════════════╝\n");
-
-    // Ligne des objets
-    printf("Objets : ");
-    for (int i = 0; i < inventaire->capacite; i++) {
-        if (i < inventaire->nb_objets) {
-            switch (inventaire->objets[i].type) {
-                case SOIN:
-                    printf("💊 ");
-                    break;
-                case FLASH:
-                    printf("⚡ ");
-                    break;
-                case TORPILLE_DE_POCHE:
-                    printf("💣 ");
-                    break;
-                case DIFFUSEUR_TOXIQUE:
-                    printf("☠️ ");
-                    break;
-                default:
-                    printf("⬛ ");
-                    break;
-            }
-        } else {
-            printf("⬛ ");
-        }
-    }
-
-    // Arme actuelle
-    printf("    Arme : ");
-    switch (inventaire->arme) {
-        case POING:
-            printf("✊");
-            break;
-        case COUTEAU:
-            printf("🔪");
-            break;
-        case HARPON:
-            printf("🎯");
-            break;
-        case LASER:
-            printf("🔫");
-            break;
-        default:
-            printf("⬛");
-            break;
-    }
-
-    printf("\n╔════════════════════════════════════════════════════════════════╗\n");
-    printf("║  %2d/%2d objets disponibles                                      ║\n",
-           inventaire->nb_objets, inventaire->capacite);
-    printf("╚════════════════════════════════════════════════════════════════╝\n\n");
-}
-
 
 // ✅ barre de PV améliorée
 void afficherBarrePV(int pv_actuels, int pv_max, int longueur) {
@@ -165,12 +71,12 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     system("clear || cls"); // nettoyage cross-platform
     printf("╔════════════════════════════════════════════════════════════════╗\n");
     printf("║                      🌊  OCEAN DEPTHS  🌊                      ║\n");
-    printf("╚════════════════════════════════════════════════════════════════╝\n\n");
-    afficherInventaireCombat(&joueur->inventaire);
+    printf("╚════════════════════════════════════════════════════════════════╝\n");
     // === Bloc supérieur : Créature ===
     printf(BOLD "%-25s" RESET "\nHP: ", creature->nom);
     afficherBarrePV(creature->points_de_vie_actuels, creature->points_de_vie_max, 20);
-    printf("  |  Fatigue: %d  |  Vitesse: %d\n", creature->niveau_fatigue, creature->vitesse);
+    printf("  |  Fatigue: %d/4  |  Vitesse: %d\n", creature->niveau_fatigue, 
+            creature->vitesse);
 
     printf("   Points d'action : ");
     afficherBarrePA(creature->points_action, 100, 20);
@@ -184,8 +90,8 @@ void afficherCombat(const CreatureMarine* creature, const Plongeur* joueur,
     // === Bloc inférieur : Joueur ===
     printf(BOLD "%-25s" RESET "\nHP: ", "Plongeur");
     afficherBarrePV(joueur->points_de_vie_actuels, joueur->points_de_vie_max, 20);
-    printf("  |  Fatigue: %d  |  Vitesse: %d\n", joueur->niveau_fatigue,
-           joueur->vitesse);
+    printf("  |  Fatigue: %d/4  |  Vitesse: %d\n", joueur->niveau_fatigue,
+            joueur->vitesse);
 
     printf("   Points d'action : ");
     afficherBarrePA(joueur->points_action, 100, 20);
@@ -258,7 +164,7 @@ void afficherJauge(const char* label, int valeur, int max) {
     printf("] %d/%d\n", valeur, max);
 }
 
-void afficheJoueurStat(Plongeur *joueur) {
+void afficherJoueurStat(Plongeur *joueur) {
     printf("\n===== STATS DU PLONGEUR =====\n");
 
     afficherJauge("❤️ Vie", joueur->points_de_vie_actuels, joueur->points_de_vie_max);
@@ -269,7 +175,7 @@ void afficheJoueurStat(Plongeur *joueur) {
 
     printf("=============================\n\n");
 
-    afficheInventaire(joueur->inventaire);
+    afficherInventaire(&joueur->inventaire);
 }
 
 void nettoyerAffichage() {
@@ -279,6 +185,3 @@ void nettoyerAffichage() {
     system("clear");
 #endif
 }
-
-
-

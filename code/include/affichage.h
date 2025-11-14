@@ -12,16 +12,18 @@ typedef enum{
 } EtatAffichage;
 
 void afficherCombat(const CreatureMarine * creature, const Plongeur * joueur, 
-    const char* message, const char* menu, EtatAffichage etat_affichage);
-void afficherTexteAnime(const char* texte, int delai_us);
-void afficherBarrePV(int pv_actuels, int pv_max, int longueur);
-void afficheInventaire(Inventaire inventaire);
-void afficherCarte(Carte carte);
+    const char* message, const char* menu, EtatAffichage etat_affichage); // Faite
+void afficherBarrePV(int pv_actuels, int pv_max, int longueur); // Faite
+void afficherBarrePA(int pa_actuels, int pa_max, int longueur); // Faite
+void afficherStatuts(int est_empoisonne, int est_etourdi, int niveau_fatigue); // Faite
+void afficherJauge(const char* label, int valeur_actuelle, int valeur_max); // Faite
 
-void afficheJoueurStat(Plongeur * joueur);
+void afficherInventaire(Inventaire* inventaire); // Faite
 
-void afficheJoueur(Plongeur * joueur);
-void nettoyerAffichage();
+void afficherCarte(Carte carte); 
+
+void afficherJoueurStat(Plongeur * joueur);
+void nettoyerAffichage(); // Faite
 
 
 #endif
