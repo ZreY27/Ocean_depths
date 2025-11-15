@@ -60,4 +60,24 @@ terminé -> ✅
 
     Mention spéciale pour les dépendances circulaires : pendant le développement du système de combat, à deux reprises, des dépendances circulaires se sont créées. Pour les résoudre, nous avons dû retirer les #include responsables des dépendances circulaires pour ensuite tagger les structures importantes et puis faire des déclarations anticipées des structures pour pouvoir compiler le projet.
 
-    
+### Améliorations possibles : 
+
+# Combat : 
+
+    Dans la version rendue, nous avons imité du développement objet en mettant les fonctions correspondant à la structure, dans le même fichier.c que la structure. Néanmoins, ces fonctions dépendent d'autres fichiers ce qui ne permet pas de réutiliser les fichier.c comme des modules pour d'autres projets. Cela rend le code moins maintenable et plus difficile à comprendre.
+    L'objectif serait que plutôt d'agir directement sur les attributs d'une structure, une valeur ou bien une structure de valeur soit renvoyée par la fonction. L'objectif serait de répondre au principe SOLID ce qui permettrait d'avoir du code clair, maintenable et modulable.
+    Cette approche peut être observée dans joueur.c avec les fonctions tels que defense(joueur) ou repos(joueur).
+    Exemple de transformation qui pourrait être fait pour respecter le principe SOLID : 
+    int attaqueLegere(Plongeur* joueur, CreatureMarine* creature);
+    deviendrait ->
+    int attaqueLegere(Plongeur* joueur);
+    => De cette façon, la fonction renvoie uniquement les dégâts calculés de manière brute (sans prise en compte de la défense ennemie) et toute la logique du combat se ferait dans combat.c.
+
+# Affichage :
+
+    Combat : l'affichage actuelle pour le combat est une fonction dans laquelle nous passons en paramètre des chaînes de caractères pour pouvoir faire des affichages plus complexes. L'un des soucis étant que le format d'affichage qui est basé sur le printf et donc sur le calcul d'octet, entre dans un sens en conflit avec l'utilisation des emojis. Les emojis prennent parfois plusieurs octets alors qu'à l'affichage, ils ne prennent que l'espace d'un caractère. Cela entraîne un décale qui peut s'observer par la barre de la boîte de texte qui est en décalage et plus du tout aligner avec les coins.
+    Une piste que nous avons explorer mais pas implémenter est l'ajout de la librairie wchar.h qui permettrait de compter le nombre de caractères à afficher pour ensuite l'afficher de façon manuelle par une fonction printf_personnalisée.
+
+
+
+
