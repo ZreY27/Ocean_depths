@@ -15,7 +15,7 @@ int main(void) {
     afficherCarte(carte);
     sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
     for (int i = 0;i<20;i++) {
-        afficheJoueurStat(&joueur);
+        afficherJoueurStat(&joueur);
         deplacement(&joueur, carte);
     }
     return 0;

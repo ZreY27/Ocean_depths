@@ -39,4 +39,49 @@ Concernant la créature (ennemie) :
     La défense : de la même manière que le joueur, la créature augmente sa défense de 50% pendant 1 tour et réduit sa fatigue d'un point.
 
     La fuite : cas extrêmement rare d'un créature qui prend peur à la vue d'un.... d'une combinaison de plongée.
-    
+
+## Déplacement sur la carte :
+
+Pour commencé, la fonction initCarte permet la génération aléatoire d'une carte, la carte est découpée en palier de 
+profondeur, eux même composé de cases, voici les différentes cases existante :
+
+
+    SURFACE, Cette case n'a aucune particularité si ce n'est le calme et la sécurité
+
+    VIDE, Cette case n'a aucune particularité
+
+    ALGUES, fouiller dans les algues peu, avec de la chance, faire gagner des perles !
+
+    EPAVE, il arrive de trouver des objets à stocker dans les épaves, très utile en combat !
+
+    GROTTE, cette case permet de se reposer uniquement
+
+    PROFONDEUR, on y croise diverses créatures marines, qui peuvent se montrer hostiles
+
+la génération de la carte est faite de la manière suivante : le premier palier est uniquement fait de surface, le
+second palier de vide et d'algues, dans le troisième apparaît des épaves, dans le quatrième des grottes, dans le
+cinquième des profondeurs.
+
+## Inventaire :
+
+L'inventaire est composé de 5 slots d'objets à utiliser en combat, et une arme. chaque slot peut être rempli avec un des
+objets suivants :
+
+    SOIN, permet au joueur de regagner la moitié de sa vie
+
+    FLASH, permet d'immobiliser la créature pendant un temps
+
+    TORPILLE_DE_POCHE, permet de mettre % de dégat à une créature
+
+    DIFFUSEUR_TOXIQUE, empoisonne une créature
+
+les objets se trouve dans les épave uniquement, et pour ce qui est des armes, elles s'obtiennent en gagnant des combats.
+Chaque niveau d'arme augmente les dégats du joueur en combat, il existe 4 niveaux d'arme :
+
+    POING
+
+    COUTEAU
+
+    HARPON
+
+    LASER
