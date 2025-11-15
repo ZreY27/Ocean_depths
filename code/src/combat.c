@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include "joueur.h"
 #include "creatures.h"
 #include "combat.h"
@@ -246,6 +246,8 @@ void joueurAgit(Plongeur* joueur, CreatureMarine* creature, EtatFuite* fuite_eta
             case 2:
                 sprintf(message, "INVENTAIRE");
                 stringInventaire(&joueur->inventaire, menu);
+                // 🔹 Ajout de l’option de retour
+                strcat(menu, " 0. Retour\n");
                 afficherCombat(creature, joueur, message, menu, AFFICHAGE_NORMAL);
                 choix_qui_met_fin_tour = ouvrirInventaire(joueur, creature);
                 break;

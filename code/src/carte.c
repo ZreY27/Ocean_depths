@@ -56,7 +56,7 @@ const char* getEmojiForType(TypeCase type) {
         case VIDE: return "🌊";
         case ALGUES: return "🌿";
         case EPAVE: return "💰";
-        case GROTTE: return "🕳️";
+        case GROTTE: return "🕳️ ";
         case PROFONDEUR: return "🐙";
         default: return "❓";
     }

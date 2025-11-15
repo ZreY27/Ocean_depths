@@ -93,8 +93,6 @@ void stringInventaire(Inventaire* inventaire, char* message) {
 
         strcat(message, ligne);
     }
-    // 🔹 Ajout de l’option de retour
-    strcat(message, " 0. Retour\n");
     // 🔹 Ajout de l’arme actuelle
     strcat(message, "Arme : ");
     switch (inventaire->arme) {
