@@ -43,33 +43,38 @@ Plongeur initJoueur() {
 
 void deplacement(Plongeur* joueur, Carte carte) {
     char saisie;
-
+    int saisie_valide = 0;
     printf("Utilisez zqsd pour vous déplacer : ");
     scanf(" %s", &saisie);  // espace avant %c pour ignorer '\n'
 
     int newX = joueur->x;
     int newY = joueur->y;
 
-    // Détermination de la direction
-    switch (saisie) {
-        case 'z': // haut
-            newY--;
-            break;
-        case 's': // bas
-            newY++;
-            break;
-        case 'q': // gauche
-            newX--;
-            break;
-        case 'd': // droite
-            newX++;
-            break;
-        default:
-            printf("Erreur de saisie !\n");
-            deplacement(joueur, carte); // redemande une saisie
-            return;
+    while (saisie_valide == 0)
+    {
+         // Détermination de la direction
+        switch (saisie) {
+            case 'z': // haut
+                newY--;
+                saisie_valide = 1;
+                break;
+            case 's': // bas
+                newY++;
+                saisie_valide = 1;
+                break;
+            case 'q': // gauche
+                newX--;
+                saisie_valide = 1;
+                break;
+            case 'd': // droite
+                newX++;
+                saisie_valide = 1;
+                break;
+            default:
+                printf("Erreur de saisie !\n");
+                break;
+        }
     }
-
     // Vérifie les limites de la carte
     if (newX < 0 || newX >= carte.longueur || newY < 0 || newY >= carte.hauteur) {
         printf("Impossible de se déplacer ici (hors de la carte) !\n");
@@ -127,7 +132,7 @@ void deplacement(Plongeur* joueur, Carte carte) {
     carte.cases[joueur->y][joueur->x].joueur = 0;  // ancienne position
     joueur->x = newX;
     joueur->y = newY;
-    joueur->niveau_fatigue++;
+    //joueur->niveau_fatigue++;
     if (newY == 0) {
         joueur->niveau_oxygene += 99;
         joueur->niveau_oxygene = joueur->niveau_oxygene % joueur->niveau_oxygene_max;

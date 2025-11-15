@@ -25,5 +25,6 @@ void afficherCarte(Carte carte);
 void afficherJoueurStat(Plongeur * joueur);
 void nettoyerAffichage(); // Faite
 
+void afficherMenuPrincipal(void); // Faite
 
 #endif

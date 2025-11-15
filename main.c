@@ -1,22 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "code/include/affichage.h"
 #include "code/include/joueur.h"
 #include "code/include/creatures.h"
 #include "code/include/carte.h"
 #include "code/include/sauvegarde.h"
+#include "code/include/console_utils.h"
+#ifdef _WIN32
+#include <windows.h>
+#define usleep(x) Sleep(x)
+#else
+#include <unistd.h>
+#endif
 
 
 int main(void) {
+    srand(time(NULL)); // Initialisation de la graine pour les nombres aléatoires
+    initConsole();
     Plongeur joueur = initJoueur();
     CreatureMarine kraken = initCreature();
-    //afficheCombat(&kraken, &joueur);
     Carte carte = initCarte(10, 10);
-    afficherCarte(carte);
-    sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
-    for (int i = 0;i<20;i++) {
-        afficherJoueurStat(&joueur);
-        deplacement(&joueur, carte);
+    int entree_utilisateur = 0;
+    while (entree_utilisateur != 3)
+    {
+        afficherMenuPrincipal();
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF); // vider le buffer d'entrée
+        scanf("%d", &entree_utilisateur); // Attente d'une entrée utilisateur pour continuer
+        
+        switch (entree_utilisateur){
+            case 1 : {
+                afficherCarte(carte);
+            sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
+            for (int i = 0;i<20;i++) {
+                afficherJoueurStat(&joueur);
+                deplacement(&joueur, carte);
+    }
+            }
+            break;
+            case 2 : {
+                printf("Fonctionnalité de chargement non encore implémentée.\n");
+            }
+            break;
+            default :
+                break;
+        }
+        usleep(1000); // Pause d'une seconde avant de revenir au menu
+        nettoyerAffichage();
     }
     return 0;
 }
