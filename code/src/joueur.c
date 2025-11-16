@@ -41,10 +41,10 @@ Plongeur initJoueur() {
     return  joueur;
 }
 
-void deplacement(Plongeur* joueur, Carte carte) {
+int deplacement(Plongeur* joueur, Carte carte) {
     char saisie;
     int saisie_valide = 0;
-    printf("Utilisez zqsd pour vous déplacer : ");
+    printf("Utilisez zqsd pour vous déplacer : \nappuyez sur 'p' pour retourner au menu principal.\n");
     scanf(" %s", &saisie);  // espace avant %c pour ignorer '\n'
 
     int newX = joueur->x;
@@ -70,6 +70,9 @@ void deplacement(Plongeur* joueur, Carte carte) {
                 newX++;
                 saisie_valide = 1;
                 break;
+            case 'p': // quitter
+                printf("Déplacement annulé.\n");
+                return 1;
             default:
                 printf("Erreur de saisie !\n");
                 break;
@@ -79,7 +82,7 @@ void deplacement(Plongeur* joueur, Carte carte) {
     if (newX < 0 || newX >= carte.longueur || newY < 0 || newY >= carte.hauteur) {
         printf("Impossible de se déplacer ici (hors de la carte) !\n");
         deplacement(joueur, carte); // redemande
-        return;
+        return 0;
     }
     switch (carte.cases[newY][newX].type) {
         case ALGUES: {
@@ -139,8 +142,8 @@ void deplacement(Plongeur* joueur, Carte carte) {
     } else joueur->niveau_oxygene -= newY;
     carte.cases[joueur->y][joueur->x].joueur = 1;  // nouvelle position
     carte.cases[joueur->y][joueur->x].visible = 1;  // nouvelle position
-
     afficherCarte(carte);
+    return 0;
 }
 
 // ---------------------------------- COMBAT -------------------------------------------------------

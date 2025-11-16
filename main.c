@@ -25,18 +25,17 @@ int main(void) {
     while (entree_utilisateur != 3)
     {
         afficherMenuPrincipal();
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF); // vider le buffer d'entrée
         scanf("%d", &entree_utilisateur); // Attente d'une entrée utilisateur pour continuer
-        
         switch (entree_utilisateur){
             case 1 : {
-                afficherCarte(carte);
-            sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
-            for (int i = 0;i<20;i++) {
-                afficherJoueurStat(&joueur);
-                deplacement(&joueur, carte);
-    }
+                int valide = 0;
+                while (!valide) {
+                    sauvegarde(joueur, carte, "../code/saves/carteSaveTest.txt");
+                    nettoyerAffichage();
+                    afficherCarte(carte);
+                    afficherJoueurStat(&joueur);
+                    valide = deplacement(&joueur, carte);
+                }
             }
             break;
             case 2 : {
@@ -46,7 +45,6 @@ int main(void) {
             default :
                 break;
         }
-        usleep(1000); // Pause d'une seconde avant de revenir au menu
         nettoyerAffichage();
     }
     return 0;

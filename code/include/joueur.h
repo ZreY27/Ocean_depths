@@ -42,7 +42,7 @@ typedef struct Plongeur{
 }Plongeur;
 
 Plongeur initJoueur();
-void deplacement(Plongeur* joueur, Carte carte);
+int deplacement(Plongeur* joueur, Carte carte);
 
 // -- Combat --
 int attaqueLegere(Plongeur* joueur, CreatureMarine* creature); // Faite
